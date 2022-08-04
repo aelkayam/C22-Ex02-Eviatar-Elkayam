@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B6F0D979-4A20-461F-9E82-462F9006A60D}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Memory_Card_Game</RootNamespace>
     <AssemblyName>Memory Card Game</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>

@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Memory_Card_Game
 {
-    public class Progaram<T>
+    public class Program
     {
         public static void Main()
         {
-            Game<T> game = new Game<T>();
+            Game <char> game = new Game<char>();
             game.Start();
+            Console.WriteLine("Press enter to exit...");
+            Console.ReadLine();
         }
     }
 }

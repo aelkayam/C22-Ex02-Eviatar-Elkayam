@@ -13,7 +13,28 @@ namespace Memory_Card_Game
         private byte m_Score;
         private string m_Name;
         private readonly bool m_isHuman;
+        private AIPlayer m_AiPlayer;
 
+        public Player(string i_Username)
+        {
+            m_Name = i_Username;
+            m_Score = 0;
+            m_AiPlayer = null;
+            m_isHuman = true;
+        }
+
+        public Player(bool i_Ainame)
+        {
+            m_Name = "pc";
+            m_Score = 0;
+            m_AiPlayer = new AIPlayer();
+            m_isHuman = false;
+        }
+
+        private class AIPlayer
+        {
+
+        }
         // TODO: parameters ctor
         // TODO: play func 
         // TODO: nested class of AI player

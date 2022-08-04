@@ -20,20 +20,16 @@ namespace Memory_Card_Game
         private bool m_isPlaying;
         private Player[] m_CurrentPlayers;
         private byte m_FlippedCardsCounter;
+        
         public Game()
         {
-            // TODO: call User input from User and get stuff
-            User_Interface.UserInput.getBoardDimensionsFormUser(out int numOfRow, out int numOfCol, km_maxSizeCardBoard, km_maxSizeCardBoard);
-            km_numOfRow = numOfRow;
-            km_numOfCol = numOfCol;
-            
-
+        // TODO: call User input from User and get stuff
         // TODO: init m_TotalPLayers
         // TODO: init m_TurnCounter
         // TODO: init m_CurrentPlayers
         // TODO: init m_isPlaying
         // TODO: init m_CardBoard
-    }
+        }
 
 
         // TODO: shuffle cards func

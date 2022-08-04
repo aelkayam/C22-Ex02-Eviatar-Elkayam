@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Memory Card Game", "Memory Card Game\Memory Card Game.csproj", "{B6F0D979-4A20-461F-9E82-462F9006A60D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User Interface", "User Interface\User Interface.csproj", "{F1EBFFDF-802E-436A-B14C-EC6013BF9C50}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6F0D979-4A20-461F-9E82-462F9006A60D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6F0D979-4A20-461F-9E82-462F9006A60D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6F0D979-4A20-461F-9E82-462F9006A60D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6F0D979-4A20-461F-9E82-462F9006A60D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1EBFFDF-802E-436A-B14C-EC6013BF9C50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1EBFFDF-802E-436A-B14C-EC6013BF9C50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1EBFFDF-802E-436A-B14C-EC6013BF9C50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1EBFFDF-802E-436A-B14C-EC6013BF9C50}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CD63E88C-096A-4EB4-AE6A-D714BD55F6BE}
+	EndGlobalSection
+EndGlobal

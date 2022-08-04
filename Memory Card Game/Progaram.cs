@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Memory_Card_Game
 {
-    internal class Progaram<T>
+    public class Progaram<T>
     {
         public static void Main()
         {

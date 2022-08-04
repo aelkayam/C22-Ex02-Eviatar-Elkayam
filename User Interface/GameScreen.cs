@@ -14,5 +14,16 @@ namespace User_Interface
         // TODO: show message
         // TODO: show game board
 
+        public void showMsg(string i_msgToShow)
+        {
+            Console.WriteLine(i_msgToShow);
+        }
+
+        public void showMsgEror(string i_msgToShow)
+        {
+            Console.WriteLine(i_msgToShow);
+        }
+
+
     }
 }

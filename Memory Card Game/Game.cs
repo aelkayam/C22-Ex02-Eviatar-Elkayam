@@ -28,9 +28,7 @@ namespace Memory_Card_Game
             // TODO: init m_CardBoard
         }
 
-
         // TODO: shuffle cards func
-
         private bool isRunning()
         {
             return m_isPlaying || m_FlippedCardsCounter == m_CardBoard.Length;
@@ -43,7 +41,6 @@ namespace Memory_Card_Game
 
         public void Start()
         {
-
         }
     }
 }

@@ -9,6 +9,9 @@ namespace Memory_Card_Game
     // add user interface and the guy's DLL
     internal class Game<T>
     {
+        private const int km_maxSizeCardBoard = 6;
+        private const int km_minSizeCardBoard = 4;
+
         private Card<T>[] m_CardBoard;
         private byte m_TotalPLayers;
         private int m_TurnCounter;

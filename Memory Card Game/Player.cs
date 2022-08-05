@@ -81,7 +81,7 @@ namespace Memory_Card_Game
         }
 
         // TODO: parameters ctor
-        // TODO: play func
+        // TODO: play func 
         // TODO: nested class of AI player
     }
 }

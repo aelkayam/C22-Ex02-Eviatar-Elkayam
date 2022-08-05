@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F1EBFFDF-802E-436A-B14C-EC6013BF9C50}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>User_Interface</RootNamespace>
-    <AssemblyName>User Interface</AssemblyName>
+    <ProjectGuid>{B6F0D979-4A20-461F-9E82-462F9006A60D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Memory_Card_Game</RootNamespace>
+    <AssemblyName>Memory Card Game</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -40,17 +40,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Ex02.ConsoleUtils">
-      <HintPath>C:\Temp\Ex02.ConsoleUtils.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="GameScreen.cs" />
-    <Compile Include="UserInput.cs" />
+    <Compile Include="GameBoard.cs" />
+    <Compile Include="Rendom.MemoryCard.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Progaram.cs" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\User Interface\User_Interface.csproj">
+      <Project>{f1ebffdf-802e-436a-b14c-ec6013bf9c50}</Project>
+      <Name>User_Interface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

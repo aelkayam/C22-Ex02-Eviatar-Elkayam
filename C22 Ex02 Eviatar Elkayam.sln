@@ -3,14 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Memory Card Game", "Memory Card Game\Memory Card Game.csproj", "{B6F0D979-4A20-461F-9E82-462F9006A60D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Memory_Card_Game", "Memory Card Game\Memory_Card_Game.csproj", "{B6F0D979-4A20-461F-9E82-462F9006A60D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User Interface", "User Interface\User Interface.csproj", "{F1EBFFDF-802E-436A-B14C-EC6013BF9C50}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AB53621D-C946-4906-8188-845D05199689}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User_Interface", "User Interface\User_Interface.csproj", "{F1EBFFDF-802E-436A-B14C-EC6013BF9C50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

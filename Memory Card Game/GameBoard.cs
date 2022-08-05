@@ -7,7 +7,7 @@ namespace Memory_Card_Game
     // TODO:1.Create a function that returns an array of char for printing
     // TODO:2.Create a variable that says how many face down cards are in the pack
     // TODO:3 If there is an even number of face-down cards and checks if there are any cards that do not have a pair
-    public class CardPack
+    public class GameBoard
     {
         private static readonly char[] ABC =
         {
@@ -41,16 +41,19 @@ namespace Memory_Card_Game
 
         private readonly int km_NumOfRows;
         private readonly int km_NumOfCols;
-        private Card[,] m_cardPack;
+        private Card[,] m_GameBoard;
 
-        public CardPack(int i_height, int i_width)
+         // TODO: find a good name
+        public GameBoard(int i_height, int i_width)
         {
             this.km_NumOfRows = i_height;
             this.km_NumOfCols = i_width;
-            this.m_cardPack = new Card[i_height, i_width];
+            m_GameBoard = new Card[i_height, i_width];
+.
+            char[] chars = new char[Length];
 
             // TODOS
-            // TODO:1.Create an array of values that are going to be entered m_cardPack
+            // TODO:1.Create an array of values that are going to be entered m_GameBoard
             // TODO:2.ShuffleCard the array => finish the function ShuffleCard
             // TODO:3.value for each of the cards
         }
@@ -69,13 +72,13 @@ namespace Memory_Card_Game
             get
             {
                 configIndexFormt(i_indexFormt, out int io_rowIndex, out int io_colIndex);
-                return m_cardPack[io_rowIndex, io_colIndex].Value;
+                return m_GameBoard[io_rowIndex, io_colIndex].Value;
             }
 
             private set
             {
                 configIndexFormt(i_indexFormt, out int io_rowIndex, out int io_colIndex);
-                m_cardPack[io_rowIndex, io_colIndex] = new Card(value);
+                m_GameBoard[io_rowIndex, io_colIndex] = new Card(value);
             }
         }
 
@@ -93,7 +96,7 @@ namespace Memory_Card_Game
             {
                 int indexOfnewValueFor_s = generateAnotherNum(s, len); // pleace, note the range
 
-                // swap procedure: note, var h to store initial Sequence[s] value
+                // swap procedure: note, char h to store initial i_charArrToShuffle[s] value
                 char currentValueInIndex_s = i_charArrToShuffle[s];
                 i_charArrToShuffle[s] = i_charArrToShuffle[indexOfnewValueFor_s];
                 i_charArrToShuffle[indexOfnewValueFor_s] = currentValueInIndex_s;
@@ -113,11 +116,11 @@ namespace Memory_Card_Game
         public List<string> FindAllNonHiddenCards()
         {
             List<string> indexOfAllHiddenCards = new List<string>();
-            foreach (Card card in this.m_cardPack)
+            foreach (Card card in this.m_GameBoard)
             {
                 if (card.Flipped)
                 {
-                    indexOfAllHiddenCards.Add(" need to add ");
+                    indexOfAllHiddenCards.Add("need to add ");
                 }
             }
 

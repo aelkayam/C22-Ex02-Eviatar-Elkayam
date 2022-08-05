@@ -14,18 +14,18 @@ namespace Memory_Card_Game
         private const int km_minSizeCardBoard = 4;
         public readonly int Km_numOfRow;
         public readonly int Km_numOfCol;
-        private CardPack m_CardBoard;
+        private GameBoard m_CardBoard;
         private byte m_TotalPLayers;
         private int m_TurnCounter;
         private bool m_isPlaying;
-        private Player[] m_CurrentPlayers;
+        private Player[] m_CurrentPlayers; // TODO: find a good name
         private byte m_FlippedCardsCounter;
 
         public Game()
         {
             Km_numOfRow = 0;
             Km_numOfCol = 0;
-            m_CardBoard = new CardPack(Km_numOfRow, Km_numOfCol);
+            m_CardBoard = new GameBoard(Km_numOfRow, Km_numOfCol);
             m_TotalPLayers = 0;
             m_TurnCounter = 0;
             m_isPlaying =false;
@@ -54,6 +54,37 @@ namespace Memory_Card_Game
 
         public void Start()
         {
+            m_isPlaying = true;
+
+            // add msg
+            do
+            {
+                /// 1St player  choice
+                // srceen show bord
+                // screen show mssg
+                int indexInPlayersArr = getPlayerIndex();
+                string indexChoice = m_CurrentPlayers[indexInPlayersArr].getPlayerChoice();
+                char ch = m_CardBoard[indexChoice]; // do
+
+                //
+                // m_CurrentPlayers[indexInPlayersArr].showChang();
+                // sleep 
+                // srceen show bord
+                // screen show mssg
+
+                /// 2nd player  choice
+                indexChoice = m_CurrentPlayers[indexInPlayersArr].getPlayerChoice();
+
+                // check is scor go up
+                // int scor = m_CurrentPlayers.check();
+                // m_CurrentPlayers[indexInPlayersArr].addScor(scor);
+
+                /// end of indexInPlayersArr turn 
+                m_TurnCounter++;
+            }
+            while (isRunning());
+
+            // print scor playrs
         }
     }
 }

@@ -12,29 +12,36 @@ namespace Memory_Card_Game
     {
         private const int km_maxSizeCardBoard = 6;
         private const int km_minSizeCardBoard = 4;
-        public readonly int km_numOfRow;
-        public readonly int km_numOfCol;
-        private Card<T>[] m_CardBoard;
+        public readonly int Km_numOfRow;
+        public readonly int Km_numOfCol;
+        private CardPack m_CardBoard;
         private byte m_TotalPLayers;
         private int m_TurnCounter;
         private bool m_isPlaying;
         private Player[] m_CurrentPlayers;
         private byte m_FlippedCardsCounter;
-        
+
         public Game()
         {
+            Km_numOfRow = 0;
+            Km_numOfCol = 0;
+            m_CardBoard = new CardPack(Km_numOfRow, Km_numOfCol);
+            m_TotalPLayers = 0;
+            m_TurnCounter = 0;
+            m_isPlaying =false;
+            m_CurrentPlayers = null;
+            m_FlippedCardsCounter = 0;
+
         // TODO: call User input from User and get stuff
         // TODO: init m_TotalPLayers
         // TODO: init m_TurnCounter
         // TODO: init m_CurrentPlayers
         // TODO: init m_isPlaying
         // TODO: init m_CardBoard
-        }
-
+    }
 
         // TODO: shuffle cards func
-        // TODO: add preFix to the maxtix 
-
+        // TODO: add preFix to the maxtix
         private bool isRunning()
         {
             return m_isPlaying || m_FlippedCardsCounter == m_CardBoard.Length;
@@ -47,7 +54,6 @@ namespace Memory_Card_Game
 
         public void Start()
         {
-
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using ConsoleUserInterface;
+using Ex02.ConsoleUtils;
 
 namespace User_Interface
 {
@@ -46,6 +47,12 @@ namespace User_Interface
                 Console.WriteLine(new StringBuilder().Append('=', m_GameBoard.GetLength(1) * 4));
                 Console.WriteLine();
             }
+        }
+
+        // clear console
+        public void ClearBoard()
+        {
+            Screen.Clear();
         }
     }
 }

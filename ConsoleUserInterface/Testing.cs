@@ -17,14 +17,16 @@ namespace User_Interface
             Console.WriteLine("width: " + width);
             Console.WriteLine("==========================================");
 
-            /// showing board and getting user move
+            /// showing board and getting user move and clear
             GameBoard gb = new GameBoard(width, length);
             GameBoardView gbv = new GameBoardView(gb);
             gbv.ShowBoard();
             UserInput.GetPlayerGameMove(out byte row, out char col, gb);
             Console.WriteLine("row: " + row);
             Console.WriteLine("col: " + col);
+            gbv.ClearBoard();
 
+            Console.WriteLine("Press enter to exit");
             Console.ReadLine();
         }
     }

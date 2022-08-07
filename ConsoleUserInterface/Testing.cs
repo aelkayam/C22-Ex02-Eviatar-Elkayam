@@ -7,7 +7,7 @@ namespace User_Interface
     {
         public static void Main()
         {
-
+            // initial set up
             UserInput.GetUserInitialInput(out string[] names, out bool versusNPC, out byte length, out byte width);
             Console.WriteLine("==========================================");
             Console.WriteLine("player1: " + names[0]);
@@ -16,16 +16,16 @@ namespace User_Interface
             Console.WriteLine("length: " + length);
             Console.WriteLine("width: " + width);
             Console.WriteLine("==========================================");
-        
 
-            GameBoardView gbv = new GameBoardView(new GameBoard(6, 6));
+            /// showing board and getting user move
+            GameBoard gb = new GameBoard(width, length);
+            GameBoardView gbv = new GameBoardView(gb);
             gbv.ShowBoard();
-            UserInput.GetPlayerGameMove(out byte row, out char col, new GameBoard(6, 6));
+            UserInput.GetPlayerGameMove(out byte row, out char col, gb);
             Console.WriteLine("row: " + row);
             Console.WriteLine("col: " + col);
 
             Console.ReadLine();
-
         }
     }
 }

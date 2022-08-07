@@ -8,12 +8,12 @@ namespace ConsoleUserInterface
         private const byte k_MaxGameBoardLength = 6;
         private const byte k_MinGameBoardLength = 4;
 
-        enum e_InputType
+        private enum e_InputType
         {
-            GameMode,           // 1 = NPC,  2 = PVP    (numbers)
-            BoardDimensions,    // k_MaxGameBoardLength < x < k_MinGameBoardLength  (numbers)
-            GameMove,           // a letter followed by number 
-            AnotherGame         // 1 = quit, 2 = another one    (numbers)
+            GameMode,            // 1 = NPC,  2 = PVP    (numbers)
+            BoardDimensions,     // k_MaxGameBoardLength < x < k_MinGameBoardLength  (numbers)
+            GameMove,            // a letter followed by number
+            AnotherGame,         // 1 = quit, 2 = another one    (numbers)
         }
 
         // get user initial inputs:
@@ -38,10 +38,11 @@ Enter 2 for Player vs Player");
                 ShowMessage(message);
                 userInputString = Console.ReadLine();
                 isViableInput = authenticate(userInputString, e_InputType.GameMode);
-            } while (!isViableInput);
+            }
+            while (!isViableInput);
 
             // return TRUE for player vs. NPC, FALSE for PVP:
-            o_VersusNPC = (byte.Parse(userInputString) == 1);
+            o_VersusNPC = byte.Parse(userInputString) == 1;
 
             // for NPC - create AI
             // for PVP - get other players names
@@ -66,33 +67,45 @@ Enter 2 for Player vs Player");
                 o_PlayersNames = new string[playerNum];
                 o_PlayersNames[0] = playerOneName;
                 o_PlayersNames[1] = playerTwoName;
-
             }
 
-
             // choose board size
-            message = String.Format(@"Enter the game board dimensions:
-the maximum available size is {0}x{0} and minimum is {1}x{1}.", k_MaxGameBoardLength, k_MinGameBoardLength);
+            message = string.Format(
+@"Enter the game board dimensions:
+The maximum available size is {0}x{0} and minimum is {1}x{1}.
+Game board must have even number of tiles.", k_MaxGameBoardLength,
+k_MinGameBoardLength);
+            bool isEvenBoard;
             ShowMessage(message);
-            // length:
             do
             {
-                message = "Please enter length size";
-                ShowMessage(message);
-                userInputString = Console.ReadLine();
-                isViableInput = authenticate(userInputString, e_InputType.BoardDimensions);
+                do
+                {
+                    // length:
+                    ShowMessage("Please enter length size:");
+                    userInputString = Console.ReadLine();
+                    isViableInput = authenticate(userInputString, e_InputType.BoardDimensions);
+                }
+                while (!isViableInput);
                 o_GameBoardLength = byte.Parse(userInputString);
-            } while (!isViableInput);
 
-            // width:
-            do
-            {
-                message = "Please enter width size";
-                ShowMessage(message);
-                userInputString = Console.ReadLine();
-                isViableInput = authenticate(userInputString, e_InputType.BoardDimensions);
+                // width:
+                do
+                {
+                    ShowMessage("Please enter width size:");
+                    userInputString = Console.ReadLine();
+                    isViableInput = authenticate(userInputString, e_InputType.BoardDimensions);
+                }
+                while (!isViableInput);
                 o_GameBoardWidth = byte.Parse(userInputString);
-            } while (!isViableInput);
+
+                isEvenBoard = (o_GameBoardLength * o_GameBoardWidth) % 2 == 0;
+                if (!isEvenBoard)
+                {
+                    ShowMessage("Odd number of tiles! Choose again.");
+                }
+            }
+            while (!isEvenBoard);
 
             // show board
         }
@@ -108,8 +121,8 @@ the maximum available size is {0}x{0} and minimum is {1}x{1}.", k_MaxGameBoardLe
                 ShowMessage("Enter your move, or 'Q' to exit");
                 playerInputString = Console.ReadLine();
                 isOkayMove = authenticate(playerInputString, e_InputType.GameMove, i_GameBoard);
-
-            } while (!isOkayMove);
+            }
+            while (!isOkayMove);
 
             if (checkIfQuit(playerInputString))
             {
@@ -121,10 +134,9 @@ the maximum available size is {0}x{0} and minimum is {1}x{1}.", k_MaxGameBoardLe
             }
 
             o_ChosenCol = char.ToUpper(playerInputString[0]);
-            o_ChosenRow = byte.Parse( playerInputString.Substring(1));
-
+            o_ChosenRow = byte.Parse(playerInputString.Substring(1));
         }
-        
+
         // validate the user inputs
         private static bool authenticate(string i_StringBeforeAuth, e_InputType i_InputType, GameBoard i_GameBoard = null)
         {
@@ -143,9 +155,8 @@ the maximum available size is {0}x{0} and minimum is {1}x{1}.", k_MaxGameBoardLe
             {
                 isWithinLimits = false;
                 ShowMessage("illegal input, please try again");
-
             }
-         
+
             return isValid && isWithinLimits;
         }
 
@@ -168,7 +179,7 @@ the maximum available size is {0}x{0} and minimum is {1}x{1}.", k_MaxGameBoardLe
                     isValid = checkIfNumber(i_StringBeforeAuth);
                     break;
             }
-            
+
             return isValid;
         }
 
@@ -176,16 +187,15 @@ the maximum available size is {0}x{0} and minimum is {1}x{1}.", k_MaxGameBoardLe
         {
             return byte.TryParse(i_StringToConvert, out byte _);
         }
-    
+
         private static bool checkIfGameMove(string i_StringToConvert)
         {
             if (i_StringToConvert.Length >= 2)
             {
-                return (char.IsLetter(i_StringToConvert[0])) && byte.TryParse(i_StringToConvert.Substring(1), out _);
+                return char.IsLetter(i_StringToConvert[0]) && byte.TryParse(i_StringToConvert.Substring(1), out _);
             }
 
             return false;
-
         }
 
         private static bool checkIfQuit(string i_StringToConvert)
@@ -195,7 +205,7 @@ the maximum available size is {0}x{0} and minimum is {1}x{1}.", k_MaxGameBoardLe
                 return char.ToUpper(quitTheGame) == k_ExitTheGame;
             }
 
-            return false;
+             return false;
         }
 
         // check if the input is a valid in terms of game rules.
@@ -225,14 +235,14 @@ the maximum available size is {0}x{0} and minimum is {1}x{1}.", k_MaxGameBoardLe
         private static bool isBooleanOption(string i_StringToCheck)
         {
             byte gameMode = byte.Parse(i_StringToCheck);
-            bool isBoolOption = (gameMode > 0 && gameMode < 3 );
-            return isBoolOption; 
+            bool isBoolOption = gameMode > 0 && gameMode < 3;
+            return isBoolOption;
         }
 
         private static bool isWithinGameLimits(string i_StringTocheck)
         {
             byte boardDimension = byte.Parse(i_StringTocheck);
-            bool isWithinDimensions = (boardDimension >= k_MinGameBoardLength && boardDimension <= k_MaxGameBoardLength );
+            bool isWithinDimensions = boardDimension >= k_MinGameBoardLength && boardDimension <= k_MaxGameBoardLength;
             return isWithinDimensions;
         }
 
@@ -250,13 +260,13 @@ the maximum available size is {0}x{0} and minimum is {1}x{1}.", k_MaxGameBoardLe
                 {
                     char column = char.ToUpper(i_StringBeforeAuth[0]);
                     byte row = byte.Parse(i_StringBeforeAuth.Substring(1));
-                    return (column >= 'A' && column < 'A' + i_GameBoard.Width - 1 && row > 0 && row <= i_GameBoard.Length);
+                    return column >= 'A' && column < 'A' + i_GameBoard.Width - 1 && row > 0 && row <= i_GameBoard.Length;
                 }
             }
 
             return false;
         }
-        
+
         public static void ShowMessage(string i_Message)
         {
             Console.WriteLine(i_Message);

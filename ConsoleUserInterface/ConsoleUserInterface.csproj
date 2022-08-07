@@ -41,7 +41,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameScreen.cs" />
+    <Compile Include="GameBoard.cs" />
+    <Compile Include="GameBoardView.cs" />
+    <Compile Include="Testing.cs" />
     <Compile Include="UserInput.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

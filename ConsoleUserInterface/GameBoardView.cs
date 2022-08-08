@@ -1,58 +1,73 @@
 ﻿using System;
 using System.Text;
-using ConsoleUserInterface;
 using Ex02.ConsoleUtils;
 
-namespace User_Interface
+namespace ConsoleUserInterface
 {
-    internal class GameBoardView
+    public static class GameBoardView
     {
-        private readonly char[,] m_GameBoard;
+        //private readonly char[,] m_GameBoard;
 
-        public GameBoardView(GameBoard gb)
-        {
-            m_GameBoard = new char[gb.Width, gb.Length];
+        //public GameBoardView(char[] gb)
+        //{
+        //    m_GameBoard = new char[gb.Width, gb.Length];
 
-            /// for testing:
-            for(int j = 0; j < m_GameBoard.GetLength(0); j++)
-            {
-                for (int i = 0; i < m_GameBoard.GetLength(1); i++)
-                {
-                    m_GameBoard[j, i] = 'K';
-                }
-            }
-        }
+        //    /// for testing:
+        //    for(int j = 0; j < m_GameBoard.GetLength(0); j++)
+        //    {
+        //        for (int i = 0; i < m_GameBoard.GetLength(1); i++)
+        //        {
+        //            m_GameBoard[j, i] = 'K';
+        //        }
+        //    }
+        //}
 
         // console print the board
-        public void ShowBoard()
+        public static void ShowBoard(char[,] i_GameBoard)
         {
             Console.Write("    ");
-            for (char c = 'A'; c < 'A' + m_GameBoard.GetLength(1); c++)
+            for (char c = 'A'; c < 'A' + i_GameBoard.GetLength(1); c++)
             {
                 Console.Write(string.Format(@"{0}  ", c));
             }
 
             Console.WriteLine();
-            Console.WriteLine(new StringBuilder().Append('=', m_GameBoard.GetLength(1) * 4));
+            Console.WriteLine(new StringBuilder().Append('=', i_GameBoard.GetLength(1) * 4));
 
-            for (int j = 1; j <= m_GameBoard.GetLength(0); j++)
+            for (int j = 1; j <= i_GameBoard.GetLength(0); j++)
             {
                 Console.Write(string.Format("{0}  |", j));
-                for (int i = 0; i < m_GameBoard.GetLength(1); i++)
+                for (int i = 0; i < i_GameBoard.GetLength(1); i++)
                 {
-                    Console.Write(string.Format("{0} |", m_GameBoard[j - 1, i]));
+                    Console.Write(string.Format("{0} |", i_GameBoard[j - 1, i]));
                 }
 
                 Console.WriteLine();
-                Console.WriteLine(new StringBuilder().Append('=', m_GameBoard.GetLength(1) * 4));
+                Console.WriteLine(new StringBuilder().Append('=', i_GameBoard.GetLength(1) * 4));
                 Console.WriteLine();
             }
         }
 
+        public static void ShowMessage(string i_Message)
+        {
+            Console.WriteLine(i_Message);
+        }
+
+        public static void ShowErrorMessage()
+        {
+            // add more options
+            ShowMessage("error, try again");
+        }
+
         // clear console
-        public void ClearBoard()
+        public static void ClearBoard()
         {
             Screen.Clear();
+        }
+
+        public static void QuitMessage()
+        {
+            ShowMessage("GoodBye!");
         }
     }
 }

@@ -1,12 +1,15 @@
 ﻿using System;
 using ConsoleUserInterface;
 
-namespace User_Interface
+namespace MemoryCardGame
 {
-    internal class Testing
+    internal class Program
     {
         public static void Main()
         {
+            //Game<T> game = new Game<T>();
+            //game.Start();
+
             // initial set up
             UserInput.GetUserInitialInput(out string[] names, out bool versusNPC, out byte length, out byte width);
             Console.WriteLine("==========================================");
@@ -19,8 +22,8 @@ namespace User_Interface
 
             /// showing board and getting user move and clear
             GameBoard gb = new GameBoard(width, length);
-            GameBoardView gbv = new GameBoardView(gb);
-            gbv.ShowBoard();
+
+            GameBoardView.ShowBoard(gb);
             UserInput.GetPlayerGameMove(out byte row, out char col, gb);
             Console.WriteLine("row: " + row);
             Console.WriteLine("col: " + col);

@@ -4,7 +4,7 @@ using Ex02.ConsoleUtils;
 
 namespace ConsoleUserInterface
 {
-    public static class GameBoardView
+    public static class Screen
     {
         // console print the board
         public static void ShowBoard(char[,] i_GameBoard)
@@ -28,7 +28,6 @@ namespace ConsoleUserInterface
 
                 Console.WriteLine();
                 Console.WriteLine(new StringBuilder().Append('=', i_GameBoard.GetLength(1) * 4));
-                Console.WriteLine();
             }
         }
 
@@ -39,14 +38,17 @@ namespace ConsoleUserInterface
 
         public static void ShowErrorMessage()
         {
-            // add more options
+            /// add more options:
+            /// choosing the same card twice
+            /// out of bounds tile
+            /// ...
             ShowMessage("error, try again");
         }
 
         // clear console
         public static void ClearBoard()
         {
-            Screen.Clear();
+            Ex02.ConsoleUtils.Screen.Clear();
         }
 
         public static void QuitMessage()

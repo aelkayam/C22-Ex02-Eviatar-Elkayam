@@ -45,7 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameBoardView.cs" />
+    <Compile Include="Screen.cs" />
     <Compile Include="UserInput.cs" />
   </ItemGroup>
   <ItemGroup>

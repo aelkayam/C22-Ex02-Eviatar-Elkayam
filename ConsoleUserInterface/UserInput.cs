@@ -31,7 +31,7 @@ namespace ConsoleUserInterface
                 message = string.Format(@"Do you want to play against NPC or another player/s?
 Enter 1 for NPC
 Enter 2 for Player vs Player");
-                GameBoardView.ShowMessage(message);
+                Screen.ShowMessage(message);
                 userInputString = Console.ReadLine();
                 isViableInput = authenticate(userInputString, e_InputType.GameMode);
             }
@@ -56,7 +56,7 @@ Enter 2 for Player vs Player");
                 /// add ONE additional player. can be expanded to more than 1 (with a loop) ///
                 playerNum++;
                 message = string.Format("Please Enter player {0} name:", playerNum);
-                GameBoardView.ShowMessage(message);
+                Screen.ShowMessage(message);
                 string playerTwoName = Console.ReadLine();
 
                 // return player names array:
@@ -76,7 +76,7 @@ Enter 2 for Player vs Player");
                 do
                 {
                     // length:
-                    GameBoardView.ShowMessage("Please enter length size:");
+                    Screen.ShowMessage("Please enter length size:");
                     userInputString = Console.ReadLine();
                     isViableInput = authenticate(userInputString, e_InputType.BoardDimensions);
                 }
@@ -86,7 +86,7 @@ Enter 2 for Player vs Player");
                 // width:
                 do
                 {
-                    GameBoardView.ShowMessage("Please enter width size:");
+                    Screen.ShowMessage("Please enter width size:");
                     userInputString = Console.ReadLine();
                     isViableInput = authenticate(userInputString, e_InputType.BoardDimensions);
                 }
@@ -96,7 +96,7 @@ Enter 2 for Player vs Player");
                 isEvenBoard = (o_GameBoardLength * o_GameBoardWidth) % 2 == 0;
                 if (!isEvenBoard)
                 {
-                    GameBoardView.ShowMessage("Odd number of tiles! Choose again.");
+                    Screen.ShowMessage("Odd number of tiles! Choose again.");
                 }
             }
             while (!isEvenBoard);
@@ -117,7 +117,7 @@ Enter 2 for Player vs Player");
                 isOkay = authenticate(answer, e_InputType.AnotherGame);
                 if (!isOkay)
                 {
-                    GameBoardView.ShowErrorMessage();
+                    Screen.ShowErrorMessage();
                 }
             }
             while (!isOkay);
@@ -133,12 +133,12 @@ Enter 2 for Player vs Player");
 
             do
             {
-                GameBoardView.ShowMessage("Enter your move, or 'Q' to exit");
+                Screen.ShowMessage("Enter your move, or 'Q' to exit");
                 playerInputString = Console.ReadLine();
                 if (checkIfQuit(playerInputString))
                 {
                     /// need to quit current game
-                    GameBoardView.QuitMessage();
+                    Screen.QuitMessage();
                     throw new Exception("quiting");
                 }
 
@@ -160,13 +160,13 @@ Enter 2 for Player vs Player");
                 isWithinLimits = authenticateWithinLimits(i_StringBeforeAuth, i_InputType, i_GameBoard);
                 if (!isWithinLimits)
                 {
-                    GameBoardView.ShowMessage("input not within defined limits, please try again");
+                    Screen.ShowMessage("input not within defined limits, please try again");
                 }
             }
             else
             {
                 isWithinLimits = false;
-                GameBoardView.ShowMessage("illegal input, please try again");
+                Screen.ShowMessage("illegal input, please try again");
             }
 
             return isValid && isWithinLimits;

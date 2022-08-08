@@ -63,7 +63,7 @@ namespace MemoryCardGame
                     validInput = checkSlotAvailable(returnChosice, i_validSlotTOChase);
                     if (validInput)
                     {
-                        GameBoardView.ShowErrorMessage();
+                        Screen.ShowErrorMessage();
 
                         // Console.WriteLine("try Again");
                     }

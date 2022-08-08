@@ -62,7 +62,7 @@ namespace MemoryCardGame
                 if (!isItComputer)
                 {
                     string message = string.Format("Please Enter player {0} name:", i);
-                    GameBoardView.ShowMessage(message);
+                    Screen.ShowMessage(message);
                     string playerName = UserInput.GetPlayersNames();
                     m_CurrentPlayers[i] = new Player(playerName);
                 }
@@ -73,7 +73,7 @@ namespace MemoryCardGame
 
                 if (!(i == m_TotalPLayers - 1))
                 {
-                    GameBoardView.ShowMessage("Is the next player AI? (2 = vs PC /1 = 2 player )");
+                    Screen.ShowMessage("Is the next player AI? (2 = vs PC /1 = 2 player )");
                     isItComputer = UserInput.GetBooleanAnswer();
                 }
             }
@@ -110,7 +110,7 @@ namespace MemoryCardGame
 The maximum available size is {0}x{0} and minimum is {1}x{1}.
 Game board must have even number of tiles.", k_MaxGameBoardLength,
 k_MinGameBoardLength);
-                GameBoardView.ShowMessage(message);
+                Screen.ShowMessage(message);
                 UserInput.GetBoardDimensions(out byte o_BoardLength, out byte o_BoardWidth);
 
                 m_GameBoard = new GameBoard(o_BoardLength, o_BoardWidth);
@@ -119,7 +119,7 @@ k_MinGameBoardLength);
                 playTheGame();
                 if (m_isPlaying)
                 {
-                    GameBoardView.ShowMessage("Do you want another game?");
+                    Screen.ShowMessage("Do you want another game?");
                     m_isPlaying = UserInput.GetBooleanAnswer();
                 }
             }
@@ -163,7 +163,7 @@ k_MinGameBoardLength);
         private string gameStage(Player i_currentlyPlayingPlayer)
         {
             drawBoard();
-            GameBoardView.ShowMessage(string.Format("{0} choose a tile", i_currentlyPlayingPlayer.Name));
+            Screen.ShowMessage(string.Format("{0} choose a tile", i_currentlyPlayingPlayer.Name));
             List<string> validSlotForChose = m_GameBoard.GetAllValidTilesForChoice();
             string indexChoice = i_currentlyPlayingPlayer.GetPlayerChoice(validSlotForChose);
             m_GameBoard.Flipped(indexChoice, true);
@@ -173,9 +173,9 @@ k_MinGameBoardLength);
 
         private void drawBoard()
         {
-            GameBoardView.ClearBoard();
-            GameBoardView.ShowBoard(m_GameBoard.GetBoardToDraw());
-            GameBoardView.ShowMessage(getPlayersScoreLine());
+            Screen.ClearBoard();
+            Screen.ShowBoard(m_GameBoard.GetBoardToDraw());
+            Screen.ShowMessage(getPlayersScoreLine());
         }
 
         private string getPlayersScoreLine()

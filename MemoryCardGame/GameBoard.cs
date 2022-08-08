@@ -138,6 +138,11 @@ namespace MemoryCardGame
             }
         }
 
+        public Card[,] GetCard()
+        {
+            return m_GameBoard;
+        }
+
         /// indexer:
         public Card this[string i_indexFormt]
         {

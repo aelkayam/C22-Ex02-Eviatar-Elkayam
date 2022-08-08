@@ -42,7 +42,7 @@ namespace MemoryCardGame
 
         private byte m_numOfRow;
         private byte m_numOfCol;
-        private GameBoard m_CardBoard;
+        private GameBoard m_GameBoard;
         private byte m_TurnCounter;
         private bool m_isPlaying;
         private Player[] m_CurrentPlayers; // TODO: find a good name
@@ -51,7 +51,7 @@ namespace MemoryCardGame
 
         public Game()
         {
-            m_CardBoard = null;
+            m_GameBoard = null;
             m_TurnCounter = 0;
             m_isPlaying = false;
             m_CurrentPlayers = null;
@@ -104,7 +104,7 @@ namespace MemoryCardGame
         // TODO: add preFix to the matrix
         private bool isRunning()
         {
-            return m_isPlaying || m_FlippedCardsCounter == m_CardBoard.Length;
+            return m_isPlaying || m_FlippedCardsCounter == m_GameBoard.Length;
         }
 
         private int getPlayerIndex()
@@ -127,7 +127,7 @@ k_MinGameBoardLength);
                 GameBoardView.ShowMessage(message);
                 UserInput.GetBoardDimensions(out byte o_BoardLength, out byte o_BoardWidth);
 
-                m_CardBoard = new GameBoard(o_BoardLength, o_BoardWidth);
+                m_GameBoard = new GameBoard(o_BoardLength, o_BoardWidth);
                 m_TurnCounter = 0;
                 m_FlippedCardsCounter = 0;
                 playTheGame();
@@ -151,7 +151,7 @@ k_MinGameBoardLength);
                     string fisrtUserCose = gameStage(currentlyPlayingPlayer);
                     string secondUserCose = gameStage(currentlyPlayingPlayer);
 
-                    bool isFindNewPair = m_CardBoard.DoThePlayersChoicesMatch(fisrtUserCose, secondUserCose);
+                    bool isFindNewPair = m_GameBoard.DoThePlayersChoicesMatch(fisrtUserCose, secondUserCose);
                     if (isFindNewPair)
                     {
                         currentlyPlayingPlayer.increaseScore();
@@ -176,9 +176,9 @@ k_MinGameBoardLength);
         {
             drawBoard();
             GameBoardView.ShowMessage(string.Format("{0} choose a tile", i_currentlyPlayingPlayer.Name));
-            List<string> validSlotForChose = m_CardBoard.getAllValidSlotsForChoice();
-            string indexChoice = i_currentlyPlayingPlayer.getPlayerChoice(validSlotForChose);
-            m_CardBoard.Flipped(indexChoice, true);
+            List<string> validSlotForChose = m_GameBoard.getAllValidSlotsForChoice();
+            string indexChoice = i_currentlyPlayingPlayer.getPlayerChoice(validSlotForChose, m_GameBoard);
+            m_GameBoard.Flipped(indexChoice, true);
 
             return indexChoice;
         }
@@ -186,7 +186,7 @@ k_MinGameBoardLength);
         private void drawBoard()
         {
             GameBoardView.ClearBoard();
-            GameBoardView.ShowBoard(m_CardBoard.getBoardToDraw());
+            GameBoardView.ShowBoard(m_GameBoard.getBoardToDraw());
             GameBoardView.ShowMessage(getPlayersScoreLine());
         }
 

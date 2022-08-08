@@ -50,14 +50,14 @@ namespace MemoryCardGame
             Name = i_Name;
         }
 
-        public string getPlayerChoice(List<string> i_validSlotTOChase)
+        public string getPlayerChoice(List<string> i_validSlotTOChase, GameBoard gameBoard)
         {
             string returnChosice;
 
             if (IsHuman)
             {
                 // use UserInput here
-                UserInput.GetPlayerGameMove(out byte row, out char col, i_validSlotTOChase.ToArray());
+                returnChosice = UserInput.GetPlayerGameMove(out byte row, out char col, gameBoard.GetCard());
             }
             else
             {

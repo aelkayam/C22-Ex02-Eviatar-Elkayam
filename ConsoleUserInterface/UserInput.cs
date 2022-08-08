@@ -32,7 +32,7 @@ namespace ConsoleUserInterface
                 message = string.Format(@"Do you want to play against NPC or another player/s?
 Enter 1 for NPC
 Enter 2 for Player vs Player");
-                ShowMessage(message);
+                GameBoardView.ShowMessage(message);
                 userInputString = Console.ReadLine();
                 isViableInput = authenticate(userInputString, e_InputType.GameMode);
             }
@@ -56,7 +56,7 @@ Enter 2 for Player vs Player");
                 /// add ONE additional player. can be expanded to more than 1 (with a loop) ///
                 playerNum++;
                 message = string.Format("Please Enter player {0} name:", playerNum);
-                ShowMessage(message);
+                GameBoardView.ShowMessage(message);
                 string playerTwoName = Console.ReadLine();
 
                 // return player names array:
@@ -64,10 +64,6 @@ Enter 2 for Player vs Player");
                 o_PlayersNames[0] = "placeholder";
                 o_PlayersNames[1] = playerTwoName;
             }
-
-            
-
-            // show board
         }
 
         public static void GetBoardDimensions(out byte o_GameBoardLength, out byte o_GameBoardWidth)
@@ -146,7 +142,7 @@ Enter 2 for Player vs Player");
             if (checkIfQuit(playerInputString))
             {
                 /// need to quit current game
-                QuitMessage();
+                GameBoardView.QuitMessage();
                 o_ChosenRow = 0;
                 o_ChosenCol = '#';
                 throw new Exception("quiting");

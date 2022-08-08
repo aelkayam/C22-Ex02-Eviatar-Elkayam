@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryCardGame", "Memory_Card_Game\MemoryCardGame.csproj", "{B6F0D979-4A20-461F-9E82-462F9006A60D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryCardGame", "MemoryCardGame\MemoryCardGame.csproj", "{B6F0D979-4A20-461F-9E82-462F9006A60D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUserInterface", "ConsoleUserInterface\ConsoleUserInterface.csproj", "{F1EBFFDF-802E-436A-B14C-EC6013BF9C50}"
 EndProject

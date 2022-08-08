@@ -6,22 +6,6 @@ namespace ConsoleUserInterface
 {
     public static class GameBoardView
     {
-        //private readonly char[,] m_GameBoard;
-
-        //public GameBoardView(char[] gb)
-        //{
-        //    m_GameBoard = new char[gb.Width, gb.Length];
-
-        //    /// for testing:
-        //    for(int j = 0; j < m_GameBoard.GetLength(0); j++)
-        //    {
-        //        for (int i = 0; i < m_GameBoard.GetLength(1); i++)
-        //        {
-        //            m_GameBoard[j, i] = 'K';
-        //        }
-        //    }
-        //}
-
         // console print the board
         public static void ShowBoard(char[,] i_GameBoard)
         {

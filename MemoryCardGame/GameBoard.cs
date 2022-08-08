@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace MemoryCardGame
 {
     // TODOS
-    // TODO:1.Create a function that returns an array of char for printing
-    // TODO:2.Create a variable that says how many face down cards are in the pack
-    // TODO:3 If there is an even number of face-down cards and checks if there are any cards that do not have a pair
+    // TODO: Create a function that returns an array of char for printing
+    // TODO: Create a variable that says how many face down cards are in the pack
+    // TODO: If there is an even number of face-down cards and checks if there are any cards that do not have a pair
     // TODO: find a good name
     public class GameBoard
     {
@@ -42,7 +42,7 @@ namespace MemoryCardGame
 
         private readonly byte km_NumOfRows;
         private readonly byte km_NumOfCols;
-        private Card[,] m_GameBoard;
+        private readonly Card[,] m_GameBoard;
 
         /// <summary>
         /// constructor
@@ -67,11 +67,14 @@ namespace MemoryCardGame
                 Console.Write(c + " ");
             }
 
-            ShuffleCard(ref chars);
+            Console.WriteLine();
+            shuffleCard(ref chars);
             foreach (char c in chars)
             {
                 Console.Write(c + " ");
             }
+
+            Console.WriteLine();
 
             m_GameBoard = new Card[km_NumOfRows, km_NumOfCols];
             byte indexInChars = 0;
@@ -80,7 +83,10 @@ namespace MemoryCardGame
                 for (int j = 0; j < km_NumOfCols; j++)
                 {
                     m_GameBoard[i, j] = new Card(chars[indexInChars++], false);
+                    Console.Write(string.Format("name {0}  val: {1}||", m_GameBoard[i, j], m_GameBoard[i, j].Value));
                 }
+
+                Console.WriteLine();
             }
         }
 
@@ -92,10 +98,10 @@ namespace MemoryCardGame
             return ABC[i_index >> 1];
         }
 
-        /// func to Shuffle arrey the cher arry befuer creat
-        /// need to chng to any arry 
+        /// function to Shuffle array the char array before creation
+        /// need to change to any array
         /// <exception cref="ArgumentNullException"></exception>
-        private char[] ShuffleCard(ref char[] i_charArrToShuffle)
+        private char[] shuffleCard(ref char[] i_charArrToShuffle)
         {
             int len = i_charArrToShuffle.Length;
             if (len == 0)
@@ -105,18 +111,16 @@ namespace MemoryCardGame
 
             for (int s = 0; s < i_charArrToShuffle.Length - 1; s++)
             {
-                int indexOfnewValueFor_s = generateAnotherNum(s, len); // pleace, note the range
+                int indexOfnewValueFor_s = generateAnotherNum(s, len); // note the range
 
                 // swap procedure: note, char h to store initial i_charArrToShuffle[s] value
-                char currentValueInIndex_s = i_charArrToShuffle[s];
-                i_charArrToShuffle[s] = i_charArrToShuffle[indexOfnewValueFor_s];
-                i_charArrToShuffle[indexOfnewValueFor_s] = currentValueInIndex_s;
+                (i_charArrToShuffle[indexOfnewValueFor_s], i_charArrToShuffle[s]) = (i_charArrToShuffle[s], i_charArrToShuffle[indexOfnewValueFor_s]);
             }
 
             return i_charArrToShuffle;
         }
 
-        /// Let unknown GenerateAnotherNum be a random
+        /// Let unknown GenerateAnotherNum be a random number
         private int generateAnotherNum(int from, int to)
         {
             Random random = new Random();
@@ -164,6 +168,7 @@ namespace MemoryCardGame
             Card c = this[i_index];
             c.Flipped = i_Value;
             this[i_index] = c;
+            Console.WriteLine(string.Format("Flipped the index {0}  to {1} , the Card val: {2} ", i_index, i_Value, this[i_index].Flipped));
         }
 
         public bool DoThePlayersChoicesMatch(string i_firstPlayerChoices, string i_SecondPlayerChoices)
@@ -179,24 +184,26 @@ namespace MemoryCardGame
         }
 
         // ===================================================================
-        // methods that use to drow the bord
+        // methods that use to draw the board
         // ===================================================================
-        public char[,] getBoardToDraw()
+        public char[,] GetBoardToDraw()
         {
             char[,] boardToDraw = new char[km_NumOfRows, km_NumOfCols];
-            foreach (Card card in m_GameBoard)
+            for (int i = 0; i < km_NumOfRows; i++)
             {
-                // how to do it
-                boardToDraw[1, 0] = card.Value;
+                for (int j = 0; j < km_NumOfCols; j++)
+                {
+                    boardToDraw[i, j] = m_GameBoard[i, j].Value;
+                }
             }
 
             return boardToDraw;
         }
 
         // ===================================================================
-        // methods that use to to Select a new slot
+        // methods that are used to select a new tile
         // ===================================================================
-        public List<string> getAllValidSlotsForChoice()
+        public List<string> GetAllValidTilesForChoice()
         {
             List<string> validSlots = new List<string>();
             for (int i = 0; i < km_NumOfRows; i++)
@@ -214,23 +221,24 @@ namespace MemoryCardGame
             return validSlots;
         }
 
-        public bool checkForNewPair()
+        public bool CheckForNewPair()
         {
             return false;
         }
 
-        /// func to config the index from the formt
+        /// function to configure the index from the format
         /// <exception cref="IndexOutOfRangeException"></exception>
         private void configIndexFormat(string i_IndexFormt, out int io_rowIndex, out int io_colIndex)
         {
-            io_rowIndex = 0;
+            io_colIndex = 0;
             bool isUpper = false;
             char charToFindTheIndex = i_IndexFormt[0];
-            string subStrOfNum = i_IndexFormt.Substring(0, i_IndexFormt.Length - 1);
-            bool isSuccessTryParse = int.TryParse(subStrOfNum, out io_colIndex);
+            char charToReplaceTheIndex = i_IndexFormt[1];
+            bool isSuccessTryParse = int.TryParse(charToReplaceTheIndex.ToString(), out io_rowIndex);
+            io_rowIndex--;
 
             // check if col exists
-            for (int i = 0; i < ABC.Length; i++)
+            for (int i = 0; i < km_NumOfCols; i++)
             {
                 if (charToFindTheIndex == ABC[i])
                 {
@@ -240,25 +248,47 @@ namespace MemoryCardGame
                 }
             }
 
-            //isUpper = char.IsLetter(charToFindTheIndex)
+            // Console.WriteLine(String.Format(
+            // @"Index out of range in configIndexFormat =>
+            // the string (index): {0}
+            // subStrOfNum :{1}
+            // charToFindTheIndex : {2}
+            // isSuccessTryParse : {3}
+            // isUpper : {4}
+            // io_colIndex: {5}
+            // io_rowIndex :{6}"
+            // , i_IndexFormt, charToReplaceTheIndex, charToFindTheIndex, isSuccessTryParse, isUpper , io_colIndex , io_rowIndex));
 
+            // isUpper = char.IsLetter(charToFindTheIndex)
             if (!isSuccessTryParse || !isUpper)
             {
-                throw new IndexOutOfRangeException("Index out of range");
+                throw new IndexOutOfRangeException(string.Format(
+@"Index out of range in configIndexFormat => 
+the string (index): {0}
+ subStrOfNum :{1} 
+charToFindTheIndex : {2} 
+isSuccessTryParse : {3} 
+isUpper : {4}
+m_GameBoard[io_rowIndex, io_colIndex] : {5}",
+i_IndexFormt,
+charToReplaceTheIndex,
+charToFindTheIndex,
+isSuccessTryParse,
+isUpper,
+m_GameBoard[io_rowIndex, io_colIndex]));
             }
 
-            bool isInvalueRow = io_rowIndex <= 0 || io_rowIndex >= km_NumOfRows;
-            bool isInvalueCol = io_colIndex <= 0 || io_colIndex >= km_NumOfCols;
-
-            if (!isInvalueRow || !isInvalueCol)
+            bool isInvalueRow = io_rowIndex < 0 || io_rowIndex >= km_NumOfRows;
+            bool isInvalueCol = io_colIndex < 0 || io_colIndex >= km_NumOfCols;
+            if (isInvalueRow || isInvalueCol)
             {
-                throw new IndexOutOfRangeException("Index out of range");
+                throw new IndexOutOfRangeException("Index out of range in configIndexFormat");
             }
         }
 
         public struct Card
         {
-            private const string km_formatToPrint = " {} |";
+            // private const string km_formatToPrint = " {} |";
             private const char m_default = ' ';
 
             private char m_Value;
@@ -332,10 +362,10 @@ namespace MemoryCardGame
             public override int GetHashCode()
             {
                 int hashCode = 1148891178;
-                hashCode = hashCode * -1521134295 + m_Value.GetHashCode();
-                hashCode = hashCode * -1521134295 + m_Flipped.GetHashCode();
-                hashCode = hashCode * -1521134295 + Value.GetHashCode();
-                hashCode = hashCode * -1521134295 + Flipped.GetHashCode();
+                hashCode = (hashCode * -1521134295) + m_Value.GetHashCode();
+                hashCode = (hashCode * -1521134295) + m_Flipped.GetHashCode();
+                hashCode = (hashCode * -1521134295) + Value.GetHashCode();
+                hashCode = (hashCode * -1521134295) + Flipped.GetHashCode();
                 return hashCode;
             }
 

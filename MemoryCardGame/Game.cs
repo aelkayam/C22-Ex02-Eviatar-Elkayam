@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Text;
 using ConsoleUserInterface;
-using ConsoleUserInterface;
 
 /// <summary>
 /// initial:
@@ -17,7 +16,7 @@ using ConsoleUserInterface;
 /// 6.Cleaning the screen and drawing the board
 /// 7.A request from the user to select a slot
 /// 8.Checking whether the slot is valid
-/// 9.do 6-8 1 more time 
+/// 9.do 6-8 1 more time
 /// 10 If the player find a pair,
 ///         10.1 the turn stays with the player
 ///    else
@@ -40,14 +39,13 @@ namespace MemoryCardGame
         private const byte k_MinGameBoardLength = 4;
         private const byte m_TotalPLayers = 2;
 
-        private byte m_numOfRow;
-        private byte m_numOfCol;
+        // private byte m_numOfRow;
+        // private byte m_numOfCol;
+        private readonly Player[] m_CurrentPlayers; // TODO: find a good name
         private GameBoard m_GameBoard;
         private byte m_TurnCounter;
         private bool m_isPlaying;
-        private Player[] m_CurrentPlayers; // TODO: find a good name
         private byte m_FlippedCardsCounter;
-        //private GameBoard screen;
 
         public Game()
         {
@@ -58,12 +56,6 @@ namespace MemoryCardGame
             m_FlippedCardsCounter = 0;
             m_CurrentPlayers = new Player[m_TotalPLayers];
 
-            //screen = new GameScreen();
-
-            //UserInput.GetUserInitialInput
-
-
-            // player 1 name
             bool isItComputer = false;
             for (int i = 0; i < m_TotalPLayers; i++)
             {
@@ -76,21 +68,15 @@ namespace MemoryCardGame
                 }
                 else
                 {
-                    m_CurrentPlayers[i] = new Player(isItComputer);
+                    m_CurrentPlayers[i] = new Player();
                 }
 
                 if (!(i == m_TotalPLayers - 1))
                 {
-                    GameBoardView.ShowMessage("Is the next player AI?");
+                    GameBoardView.ShowMessage("Is the next player AI? (2 = vs PC /1 = 2 player )");
                     isItComputer = UserInput.GetBooleanAnswer();
                 }
             }
-        
-            //for (int i = 0; i < m_TotalPLayers; i++)
-            //{
-            //    m_CurrentPlayers[i] = new Player(isItComputre);
-            //    isItComputre = true; // asq from user
-            //}
 
             // TODO: call User input from User and get stuff
             // TODO: init m_TotalPLayers
@@ -142,19 +128,20 @@ k_MinGameBoardLength);
 
         private void playTheGame()
         {
-            // add msg
             try
             {
                 do
                 {
                     Player currentlyPlayingPlayer = m_CurrentPlayers[getPlayerIndex()];
-                    string fisrtUserCose = gameStage(currentlyPlayingPlayer);
-                    string secondUserCose = gameStage(currentlyPlayingPlayer);
+                    string firstPlayerScore = gameStage(currentlyPlayingPlayer);
+                    string secondPlayerScore = gameStage(currentlyPlayingPlayer);
 
-                    bool isFindNewPair = m_GameBoard.DoThePlayersChoicesMatch(fisrtUserCose, secondUserCose);
+                    bool isFindNewPair = m_GameBoard.DoThePlayersChoicesMatch(firstPlayerScore, secondPlayerScore);
+                    drawBoard();
+
                     if (isFindNewPair)
                     {
-                        currentlyPlayingPlayer.increaseScore();
+                        currentlyPlayingPlayer.IncreaseScore();
                         m_FlippedCardsCounter++;
                         m_FlippedCardsCounter++;
                     }
@@ -166,8 +153,9 @@ k_MinGameBoardLength);
                 }
                 while (isRunning());
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 m_isPlaying = false;
             }
         }
@@ -176,8 +164,8 @@ k_MinGameBoardLength);
         {
             drawBoard();
             GameBoardView.ShowMessage(string.Format("{0} choose a tile", i_currentlyPlayingPlayer.Name));
-            List<string> validSlotForChose = m_GameBoard.getAllValidSlotsForChoice();
-            string indexChoice = i_currentlyPlayingPlayer.getPlayerChoice(validSlotForChose, m_GameBoard);
+            List<string> validSlotForChose = m_GameBoard.GetAllValidTilesForChoice();
+            string indexChoice = i_currentlyPlayingPlayer.GetPlayerChoice(validSlotForChose);
             m_GameBoard.Flipped(indexChoice, true);
 
             return indexChoice;
@@ -186,7 +174,7 @@ k_MinGameBoardLength);
         private void drawBoard()
         {
             GameBoardView.ClearBoard();
-            GameBoardView.ShowBoard(m_GameBoard.getBoardToDraw());
+            GameBoardView.ShowBoard(m_GameBoard.GetBoardToDraw());
             GameBoardView.ShowMessage(getPlayersScoreLine());
         }
 

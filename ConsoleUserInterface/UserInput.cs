@@ -21,7 +21,6 @@ namespace ConsoleUserInterface
         // names(array), single-player or multi-player and  game board size(length and width)
         public static void GetUserInitialInput(out string[] o_PlayersNames, out bool o_VersusNPC)
         {
-
             // choose game mode
             bool isViableInput;
             string userInputString;
@@ -42,6 +41,7 @@ Enter 2 for Player vs Player");
             o_VersusNPC = byte.Parse(userInputString) == 1;
 
             int playerNum = 0;
+
             // for NPC - create AI
             // for PVP - get other players names
             if (o_VersusNPC)
@@ -122,11 +122,11 @@ Enter 2 for Player vs Player");
             }
             while (!isOkay);
 
-            return char.ToLower(char.Parse(answer)) == 'y';
+            return (answer == "Y") || (answer == "y");
         }
 
         // get player move (a letter and number combined)
-        public static void GetPlayerGameMove(out byte o_ChosenRow, out char o_ChosenCol, char[,] i_GameBoard)
+        public static string GetPlayerGameMove()
         {
             string playerInputString;
             bool isOkayMove;
@@ -135,21 +135,18 @@ Enter 2 for Player vs Player");
             {
                 GameBoardView.ShowMessage("Enter your move, or 'Q' to exit");
                 playerInputString = Console.ReadLine();
-                isOkayMove = authenticate(playerInputString, e_InputType.GameMove, i_GameBoard);
+                if (checkIfQuit(playerInputString))
+                {
+                    /// need to quit current game
+                    GameBoardView.QuitMessage();
+                    throw new Exception("quiting");
+                }
+
+                isOkayMove = authenticateValidity(playerInputString, e_InputType.GameMove);
             }
             while (!isOkayMove);
 
-            if (checkIfQuit(playerInputString))
-            {
-                /// need to quit current game
-                GameBoardView.QuitMessage();
-                o_ChosenRow = 0;
-                o_ChosenCol = '#';
-                throw new Exception("quiting");
-            }
-
-            o_ChosenCol = char.ToUpper(playerInputString[0]);
-            o_ChosenRow = byte.Parse(playerInputString.Substring(1));
+            return playerInputString;
         }
 
         // validate the user inputs

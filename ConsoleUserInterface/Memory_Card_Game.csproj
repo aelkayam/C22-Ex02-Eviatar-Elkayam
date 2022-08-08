@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B6F0D979-4A20-461F-9E82-462F9006A60D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Memory_Card_Game</RootNamespace>
+    <AssemblyName>Memory Card Game</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+<<<<<<<< HEAD:ConsoleUserInterface/Memory_Card_Game.csproj
+    <Compile Include="GameBoard.cs" />
+    <Compile Include="Rendom.MemoryCard.cs" />
+========
+>>>>>>>> ad3e8ca2172a54ec85a8e75832f40d035021c7a0:MemoryCardGame/MemoryCardGame.csproj
+    <Compile Include="Game.cs" />
+    <Compile Include="GameBoard.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+<<<<<<<< HEAD:ConsoleUserInterface/Memory_Card_Game.csproj
+    <ProjectReference Include="..\User Interface\User_Interface.csproj">
+      <Project>{f1ebffdf-802e-436a-b14c-ec6013bf9c50}</Project>
+      <Name>User_Interface</Name>
+========
+    <ProjectReference Include="..\ConsoleUserInterface\ConsoleUserInterface.csproj">
+      <Project>{f1ebffdf-802e-436a-b14c-ec6013bf9c50}</Project>
+      <Name>ConsoleUserInterface</Name>
+>>>>>>>> ad3e8ca2172a54ec85a8e75832f40d035021c7a0:MemoryCardGame/MemoryCardGame.csproj
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

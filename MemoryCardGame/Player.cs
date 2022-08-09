@@ -6,14 +6,12 @@ namespace MemoryCardGame
 {
     internal class Player
     {
-        // public const string k_msgSlotIsTaken = "This slot {0} is taken";
-        // public const string k_msgInvalidInput = "The slot {0} Does not exist";
-        // public const string k_msgToAskForPlayerChoice = "Please choose a slot from the available slots\n.In the format: a capital letter for a column and then a number for a row(without a space),Like: E3 \nThen enter";
         private readonly bool m_IsHuman;
         private byte m_Score;
         private string m_Name;
 
-        // private AIPlayer m_AiPlayer;
+        // TODO => el : AIPlayer m_AiPlayer 
+        private AIPlayer m_AiPlayer;
         public byte Score { get => m_Score; set => m_Score = value; }
 
         public void IncreaseScore()
@@ -64,8 +62,6 @@ namespace MemoryCardGame
                     if (validInput)
                     {
                         Screen.ShowErrorMessage();
-
-                        // Console.WriteLine("try Again");
                     }
                 }
                 while (validInput);
@@ -103,9 +99,14 @@ namespace MemoryCardGame
         private class AIPlayer
         {
             private static Random m_Random = new Random();
-            private List<string> m_Memory = new List<string>();
+            private List<string> m_Memory = new List<string>(); // string formt cher in card - slot  
 
-            public string GetAIPlayerChoice_smert(List<string> i_validSlotTOChase)
+
+            // m_Memory => sort if ther ar 2 cher thet 
+            //
+
+
+            public string? GetAIPlayerChoice_smert(List<string> i_validSlotTOChase)
             {
                 foreach (string ch in i_validSlotTOChase)
                 {
@@ -116,7 +117,8 @@ namespace MemoryCardGame
 
                 return null;
             }
-
+            
+            // the not smart way 
             internal static string GetAIPlayerChoice(List<string> i_validSlotTOChase)
             {
                 int rend = m_Random.Next(i_validSlotTOChase.Count);
@@ -124,8 +126,5 @@ namespace MemoryCardGame
             }
         }
 
-        // TODO: parameters ctor
-        // TODO: play function
-        // TODO: nested class of AI player
     }
 }

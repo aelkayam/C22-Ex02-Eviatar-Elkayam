@@ -32,16 +32,18 @@ using ConsoleUserInterface;
 namespace MemoryCardGame
 {
     // add user interface and the guy's DLL
-    internal class Game<T>
+
+    // TODO: T ? in the end  
+    public class Game<T>
     {
         private const int k_sleepBetweenTurns = 2000;
-        private const byte k_MaxGameBoardLength = 6;
-        private const byte k_MinGameBoardLength = 4;
+        public const byte k_MaxGameBoardLength = 6;
+        public const byte k_MinGameBoardLength = 4;
         private const byte m_TotalPLayers = 2;
 
-        // private byte m_numOfRow;
-        // private byte m_numOfCol;
-        private readonly Player[] m_CurrentPlayers; // TODO: find a good name
+        // TODO => ev: add redonly bool 
+
+        private Player[] m_AllPlayersInGame; 
         private GameBoard m_GameBoard;
         private byte m_TurnCounter;
         private bool m_isPlaying;
@@ -52,9 +54,9 @@ namespace MemoryCardGame
             m_GameBoard = null;
             m_TurnCounter = 0;
             m_isPlaying = false;
-            m_CurrentPlayers = null;
+            m_AllPlayersInGame = null;
             m_FlippedCardsCounter = 0;
-            m_CurrentPlayers = new Player[m_TotalPLayers];
+            m_AllPlayersInGame = new Player[m_TotalPLayers];
 
             bool isItComputer = false;
             for (int i = 0; i < m_TotalPLayers; i++)
@@ -64,11 +66,11 @@ namespace MemoryCardGame
                     string message = string.Format("Please Enter player {0} name:", i);
                     Screen.ShowMessage(message);
                     string playerName = UserInput.GetPlayersNames();
-                    m_CurrentPlayers[i] = new Player(playerName);
+                    m_AllPlayersInGame[i] = new Player(playerName);
                 }
                 else
                 {
-                    m_CurrentPlayers[i] = new Player();
+                    m_AllPlayersInGame[i] = new Player();
                 }
 
                 if (!(i == m_TotalPLayers - 1))
@@ -77,19 +79,11 @@ namespace MemoryCardGame
                     isItComputer = UserInput.GetBooleanAnswer();
                 }
             }
-
-            // TODO: call User input from User and get stuff
-            // TODO: init m_TotalPLayers
-            // TODO: init m_TurnCounter
-            // TODO: init m_CurrentPlayers
-            // TODO: init m_isPlaying
-            // TODO: init m_CardBoard
         }
 
-        // TODO: shuffle cards function
-        // TODO: add preFix to the matrix
         private bool isRunning()
         {
+            // TODO => ev: move m_FlippedCardsCounter to gameBord 
             return m_isPlaying || m_FlippedCardsCounter == m_GameBoard.Length;
         }
 
@@ -119,6 +113,7 @@ k_MinGameBoardLength);
                 playTheGame();
                 if (m_isPlaying)
                 {
+                    // TODO => el: add to enum in screen  
                     Screen.ShowMessage("Do you want another game?");
                     m_isPlaying = UserInput.GetBooleanAnswer();
                 }
@@ -132,16 +127,16 @@ k_MinGameBoardLength);
             {
                 do
                 {
-                    Player currentlyPlayingPlayer = m_CurrentPlayers[getPlayerIndex()];
+                    Player currentlyPlayingPlayer = m_AllPlayersInGame[getPlayerIndex()];
                     string firstPlayerScore = gameStage(currentlyPlayingPlayer);
                     string secondPlayerScore = gameStage(currentlyPlayingPlayer);
-
-                    bool isFindNewPair = m_GameBoard.DoThePlayersChoicesMatch(firstPlayerScore, secondPlayerScore);
                     drawBoard();
+                    bool isFindNewPair = m_GameBoard.DoThePlayersChoicesMatch(firstPlayerScore, secondPlayerScore);
 
                     if (isFindNewPair)
                     {
                         currentlyPlayingPlayer.IncreaseScore();
+                        // TODO=> ev: remov the ++ after 
                         m_FlippedCardsCounter++;
                         m_FlippedCardsCounter++;
                     }
@@ -162,11 +157,22 @@ k_MinGameBoardLength);
 
         private string gameStage(Player i_currentlyPlayingPlayer)
         {
-            drawBoard();
-            Screen.ShowMessage(string.Format("{0} choose a tile", i_currentlyPlayingPlayer.Name));
+            bool userInputValid = true;
+            string indexChoice;
+            string mag = string.Format("{0} choose a tile", i_currentlyPlayingPlayer.Name);
             List<string> validSlotForChose = m_GameBoard.GetAllValidTilesForChoice();
-            string indexChoice = i_currentlyPlayingPlayer.GetPlayerChoice(validSlotForChose);
-            m_GameBoard.Flipped(indexChoice, true);
+            do
+            {
+                drawBoard();
+                Screen.ShowMessage(mag);
+                if(!userInputValid)
+                {
+                    Console.WriteLine("try Agin !! "); 
+                }
+                indexChoice = i_currentlyPlayingPlayer.GetPlayerChoice(validSlotForChose);
+                userInputValid=validSlotForChose.Contains(indexChoice);// ? 
+            } while (userInputValid);
+            m_GameBoard.Flipped(indexChoice, true);// 
 
             return indexChoice;
         }
@@ -182,7 +188,7 @@ k_MinGameBoardLength);
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach (Player player in m_CurrentPlayers)
+            foreach (Player player in m_AllPlayersInGame)
             {
                 sb.Append(player.ToString());
             }

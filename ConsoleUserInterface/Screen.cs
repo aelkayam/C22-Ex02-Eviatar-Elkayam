@@ -6,6 +6,13 @@ namespace ConsoleUserInterface
 {
     public static class Screen
     {
+        // TODO => el: enum + all string the we consol
+        // public const string k_msgSlotIsTaken = "This slot {0} is taken";
+        // public const string k_msgInvalidInput = "The slot {0} Does not exist";
+        // public const string k_msgToAskForPlayerChoice = "Please choose a slot from the available slots\n.In the format: a capital letter for a column and then a number for a row(without a space),Like: E3 \nThen enter";
+
+        // enun 
+
         // console print the board
         public static void ShowBoard(char[,] i_GameBoard)
         {

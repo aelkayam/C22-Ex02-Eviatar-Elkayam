@@ -3,11 +3,13 @@ using ConsoleUserInterface;
 
 namespace ConsoleUserInterface
 {
+
     public static class UserInput
     {
         private const char k_ExitTheGame = 'Q';
-        private const byte k_MaxGameBoardLength = 6;
-        private const byte k_MinGameBoardLength = 4;
+        // TODO => ev :   config if we can use the const in Game or Creant a Dll game Sting;
+        private const byte k_maxGameBoardLength = 6;
+        private const byte k_minGameBoardLength = 4;
 
         private enum e_InputType
         {
@@ -19,52 +21,51 @@ namespace ConsoleUserInterface
 
         // get user initial inputs:
         // names(array), single-player or multi-player and  game board size(length and width)
-        public static void GetUserInitialInput(out string[] o_PlayersNames, out bool o_VersusNPC)
-        {
-            // choose game mode
-            bool isViableInput;
-            string userInputString;
-            string message;
+//        public static void GetUserInitialInput(out string[] o_PlayersNames, out bool o_VersusNPC)
+//        {
+//            // choose game mode
+//            bool isViableInput;
+//            string userInputString;
+//            string message;
+//            do
+//            {
+//                message = string.Format(@"Do you want to play against NPC or another player/s?
+//Enter 1 for NPC
+//Enter 2 for Player vs Player");
+//                Screen.ShowMessage(message);
+//                userInputString = Console.ReadLine();
+//                isViableInput = authenticate(userInputString, e_InputType.GameMode);
+//            }
+//            while (!isViableInput);
 
-            do
-            {
-                message = string.Format(@"Do you want to play against NPC or another player/s?
-Enter 1 for NPC
-Enter 2 for Player vs Player");
-                Screen.ShowMessage(message);
-                userInputString = Console.ReadLine();
-                isViableInput = authenticate(userInputString, e_InputType.GameMode);
-            }
-            while (!isViableInput);
+//            // return TRUE for player vs. NPC, FALSE for PVP:
+//            o_VersusNPC = byte.Parse(userInputString) == 1;
 
-            // return TRUE for player vs. NPC, FALSE for PVP:
-            o_VersusNPC = byte.Parse(userInputString) == 1;
+//            int playerNum = 0;
 
-            int playerNum = 0;
+//            // for NPC - create AI
+//            // for PVP - get other players names
+//            if (o_VersusNPC)
+//            {
+//                // return player names array:
+//                o_PlayersNames = new string[2];
+//                o_PlayersNames[0] = "placeholder";
+//                o_PlayersNames[1] = "AI";
+//            }
+//            else
+//            {
+//                /// add ONE additional player. can be expanded to more than 1 (with a loop) ///
+//                playerNum++;
+//                message = string.Format("Please Enter player {0} name:", playerNum);
+//                Screen.ShowMessage(message);
+//                string playerTwoName = Console.ReadLine();
 
-            // for NPC - create AI
-            // for PVP - get other players names
-            if (o_VersusNPC)
-            {
-                // return player names array:
-                o_PlayersNames = new string[2];
-                o_PlayersNames[0] = "placeholder";
-                o_PlayersNames[1] = "AI";
-            }
-            else
-            {
-                /// add ONE additional player. can be expanded to more than 1 (with a loop) ///
-                playerNum++;
-                message = string.Format("Please Enter player {0} name:", playerNum);
-                Screen.ShowMessage(message);
-                string playerTwoName = Console.ReadLine();
-
-                // return player names array:
-                o_PlayersNames = new string[playerNum];
-                o_PlayersNames[0] = "placeholder";
-                o_PlayersNames[1] = playerTwoName;
-            }
-        }
+//                // return player names array:
+//                o_PlayersNames = new string[playerNum];
+//                o_PlayersNames[0] = "placeholder";
+//                o_PlayersNames[1] = playerTwoName;
+//            }
+//        }
 
         public static void GetBoardDimensions(out byte o_GameBoardLength, out byte o_GameBoardWidth)
         {
@@ -102,11 +103,14 @@ Enter 2 for Player vs Player");
             while (!isEvenBoard);
         }
 
+        // TODO  => el: add func thet only Console.ReadLine();
+        // TODO  => el: remve all Console.ReadLine(); and cang it to up ^
         public static string GetPlayersNames()
         {
             return Console.ReadLine();
         }
 
+        // TODO  => el: fix the return val
         public static bool GetBooleanAnswer()
         {
             bool isOkay;
@@ -114,7 +118,7 @@ Enter 2 for Player vs Player");
             do
             {
                 answer = Console.ReadLine();
-                isOkay = authenticate(answer, e_InputType.AnotherGame);
+                isOkay = authenticate(answer, e_InputType.AnotherGame); // the probluem
                 if (!isOkay)
                 {
                     Screen.ShowErrorMessage();
@@ -254,7 +258,7 @@ Enter 2 for Player vs Player");
         private static bool isWithinGameLimits(string i_StringTocheck)
         {
             byte boardDimension = byte.Parse(i_StringTocheck);
-            bool isWithinDimensions = boardDimension >= k_MinGameBoardLength && boardDimension <= k_MaxGameBoardLength;
+            bool isWithinDimensions = boardDimension >= k_minGameBoardLength && boardDimension <= k_maxGameBoardLength;
             return isWithinDimensions;
         }
 

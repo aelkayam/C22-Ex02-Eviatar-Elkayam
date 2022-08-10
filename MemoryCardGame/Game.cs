@@ -61,8 +61,7 @@ namespace MemoryCardGame
             {
                 if (!isItComputer)
                 {
-                    string message = string.Format("Please Enter player {0} name:", i);
-                    Screen.ShowMessage(message);
+                    Screen.ShowPrompt(ePromptType.PlayerName, i.ToString());
                     string playerName = UserInput.GetPlayersNames();
                     m_CurrentPlayers[i] = new Player(playerName);
                 }
@@ -73,7 +72,7 @@ namespace MemoryCardGame
 
                 if (!(i == m_TotalPLayers - 1))
                 {
-                    Screen.ShowMessage("Is the next player AI? (2 = vs PC /1 = 2 player )");
+                    Screen.ShowPrompt(ePromptType.AIPlayer);
                     isItComputer = UserInput.GetBooleanAnswer();
                 }
             }
@@ -98,19 +97,13 @@ namespace MemoryCardGame
             return m_TurnCounter % m_TotalPLayers;
         }
 
+        // begin a new game
         public void Start()
         {
             m_isPlaying = true;
             do
             {
-                // ask for board Dimensions
-                // choose board size
-                string message = string.Format(
-@"Enter the game board dimensions:
-The maximum available size is {0}x{0} and minimum is {1}x{1}.
-Game board must have even number of tiles.", k_MaxGameBoardLength,
-k_MinGameBoardLength);
-                Screen.ShowMessage(message);
+                Screen.ShowPrompt(ePromptType.GameBoardDimensions, k_MinGameBoardLength.ToString(), k_MaxGameBoardLength.ToString());
                 UserInput.GetBoardDimensions(out byte o_BoardLength, out byte o_BoardWidth);
 
                 m_GameBoard = new GameBoard(o_BoardLength, o_BoardWidth);
@@ -119,13 +112,14 @@ k_MinGameBoardLength);
                 playTheGame();
                 if (m_isPlaying)
                 {
-                    Screen.ShowMessage("Do you want another game?");
+                    Screen.ShowPrompt(ePromptType.AnotherGame);
                     m_isPlaying = UserInput.GetBooleanAnswer();
                 }
             }
             while (m_isPlaying);
         }
 
+        // game rounds
         private void playTheGame()
         {
             try
@@ -160,10 +154,13 @@ k_MinGameBoardLength);
             }
         }
 
+        // player turn
         private string gameStage(Player i_currentlyPlayingPlayer)
         {
             drawBoard();
-            Screen.ShowMessage(string.Format("{0} choose a tile", i_currentlyPlayingPlayer.Name));
+
+            // Screen.ShowPrompt(string.Format("{0} choose a tile", i_currentlyPlayingPlayer.Name));
+            Screen.ShowPrompt(ePromptType.GameMove);
             List<string> validSlotForChose = m_GameBoard.GetAllValidTilesForChoice();
             string indexChoice = i_currentlyPlayingPlayer.GetPlayerChoice(validSlotForChose);
             m_GameBoard.Flipped(indexChoice, true);

@@ -14,19 +14,6 @@ namespace MemoryCardGame
         private string m_Name;
 
         // private AIPlayer m_AiPlayer;
-        public byte Score { get => m_Score; set => m_Score = value; }
-
-        public void IncreaseScore()
-        {
-            this.m_Score++;
-        }
-
-        public string Name { get => m_Name; set => m_Name = value; }
-
-        public bool IsHuman
-        {
-            get { return m_IsHuman; }
-        }
 
         /// <summary>
         /// constructor for create Human Player
@@ -50,6 +37,21 @@ namespace MemoryCardGame
             Name = i_Name;
         }
 
+        public byte Score { get => m_Score; set => m_Score = value; }
+
+        public void IncreaseScore()
+        {
+            this.m_Score++;
+        }
+
+        public string Name { get => m_Name; set => m_Name = value; }
+
+        public bool IsHuman
+        {
+            get { return m_IsHuman; }
+        }
+
+
         public string GetPlayerChoice(List<string> i_validSlotTOChase)
         {
             string returnChosice;
@@ -63,7 +65,7 @@ namespace MemoryCardGame
                     validInput = checkSlotAvailable(returnChosice, i_validSlotTOChase);
                     if (validInput)
                     {
-                        Screen.ShowErrorMessage();
+                        Screen.ShowError(eErrorType.CardTaken);
 
                         // Console.WriteLine("try Again");
                     }
@@ -79,10 +81,10 @@ namespace MemoryCardGame
             return returnChosice;
         }
 
-        private static bool checkSlotAvailable(string i_slotForTest, List<string> i_validSlotTOChase)
+        private static bool checkSlotAvailable(string i_slotForTest, List<string> i_ValidSlotToChoose)
         {
             bool slotFree = false;
-            foreach (string slot in i_validSlotTOChase)
+            foreach (string slot in i_ValidSlotToChoose)
             {
                 if (slot == i_slotForTest)
                 {
@@ -105,7 +107,7 @@ namespace MemoryCardGame
             private static Random m_Random = new Random();
             private List<string> m_Memory = new List<string>();
 
-            public string GetAIPlayerChoice_smert(List<string> i_validSlotTOChase)
+            public string GetAIPlayerChoiceSmart(List<string> i_validSlotTOChase)
             {
                 foreach (string ch in i_validSlotTOChase)
                 {
@@ -119,8 +121,8 @@ namespace MemoryCardGame
 
             internal static string GetAIPlayerChoice(List<string> i_validSlotTOChase)
             {
-                int rend = m_Random.Next(i_validSlotTOChase.Count);
-                return i_validSlotTOChase[rend];
+                int randomTile = m_Random.Next(i_validSlotTOChase.Count);
+                return i_validSlotTOChase[randomTile];
             }
         }
 

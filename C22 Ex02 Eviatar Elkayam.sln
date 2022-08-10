@@ -10,7 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryCardGame", "MemoryCardGame\MemoryCardGame.csproj", "{399793D7-5A97-4158-8848-29B3D9D79717}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemoryCardGame", "MemoryCardGame\MemoryCardGame.csproj", "{399793D7-5A97-4158-8848-29B3D9D79717}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", "{DA58713F-9048-46AE-9163-EC325ADF664D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{399793D7-5A97-4158-8848-29B3D9D79717}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{399793D7-5A97-4158-8848-29B3D9D79717}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{399793D7-5A97-4158-8848-29B3D9D79717}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA58713F-9048-46AE-9163-EC325ADF664D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA58713F-9048-46AE-9163-EC325ADF664D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA58713F-9048-46AE-9163-EC325ADF664D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA58713F-9048-46AE-9163-EC325ADF664D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

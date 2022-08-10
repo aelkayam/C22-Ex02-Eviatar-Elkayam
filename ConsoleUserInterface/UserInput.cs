@@ -1,74 +1,27 @@
 ﻿using System;
 using ConsoleUserInterface;
+using Game;
+// TODO: add the ref to Game
 
 namespace ConsoleUserInterface
 {
-
     public static class UserInput
     {
         private const char k_ExitTheGame = 'Q';
-        // TODO => ev :   config if we can use the const in Game or Creant a Dll game Sting;
-        private const byte k_maxGameBoardLength = 6;
-        private const byte k_minGameBoardLength = 4;
+        private const byte k_MaxGameBoardLength = 6;
+        private const byte k_MinGameBoardLength = 4;
 
         private enum e_InputType
         {
             GameMode,            // 1 = NPC,  2 = PVP    (numbers)
             BoardDimensions,     // k_MaxGameBoardLength < x < k_MinGameBoardLength  (numbers)
             GameMove,            // a letter followed by number
-            AnotherGame,         // 1 = quit, 2 = another one    (numbers) // change to y/n
+            AnotherGame,         // y = another game, n = quit  (Y/N)
         }
-
-        // get user initial inputs:
-        // names(array), single-player or multi-player and  game board size(length and width)
-//        public static void GetUserInitialInput(out string[] o_PlayersNames, out bool o_VersusNPC)
-//        {
-//            // choose game mode
-//            bool isViableInput;
-//            string userInputString;
-//            string message;
-//            do
-//            {
-//                message = string.Format(@"Do you want to play against NPC or another player/s?
-//Enter 1 for NPC
-//Enter 2 for Player vs Player");
-//                Screen.ShowMessage(message);
-//                userInputString = Console.ReadLine();
-//                isViableInput = authenticate(userInputString, e_InputType.GameMode);
-//            }
-//            while (!isViableInput);
-
-//            // return TRUE for player vs. NPC, FALSE for PVP:
-//            o_VersusNPC = byte.Parse(userInputString) == 1;
-
-//            int playerNum = 0;
-
-//            // for NPC - create AI
-//            // for PVP - get other players names
-//            if (o_VersusNPC)
-//            {
-//                // return player names array:
-//                o_PlayersNames = new string[2];
-//                o_PlayersNames[0] = "placeholder";
-//                o_PlayersNames[1] = "AI";
-//            }
-//            else
-//            {
-//                /// add ONE additional player. can be expanded to more than 1 (with a loop) ///
-//                playerNum++;
-//                message = string.Format("Please Enter player {0} name:", playerNum);
-//                Screen.ShowMessage(message);
-//                string playerTwoName = Console.ReadLine();
-
-//                // return player names array:
-//                o_PlayersNames = new string[playerNum];
-//                o_PlayersNames[0] = "placeholder";
-//                o_PlayersNames[1] = playerTwoName;
-//            }
-//        }
 
         public static void GetBoardDimensions(out byte o_GameBoardLength, out byte o_GameBoardWidth)
         {
+
             string userInputString;
             bool isViableInput;
             bool isEvenBoard;
@@ -76,19 +29,19 @@ namespace ConsoleUserInterface
             {
                 do
                 {
-                    // length:
-                    Screen.ShowMessage("Please enter length size:");
-                    userInputString = Console.ReadLine();
+                    // width (left to right):
+                    Screen.ShowPrompt(ePromptType.GameBoardWidth);
+                    userInputString = GetUserInput();
                     isViableInput = authenticate(userInputString, e_InputType.BoardDimensions);
                 }
                 while (!isViableInput);
                 o_GameBoardLength = byte.Parse(userInputString);
 
-                // width:
                 do
                 {
-                    Screen.ShowMessage("Please enter width size:");
-                    userInputString = Console.ReadLine();
+                    // height (top to bottom):
+                    Screen.ShowPrompt(ePromptType.GameBoardHeight);
+                    userInputString = GetUserInput();
                     isViableInput = authenticate(userInputString, e_InputType.BoardDimensions);
                 }
                 while (!isViableInput);
@@ -97,31 +50,28 @@ namespace ConsoleUserInterface
                 isEvenBoard = (o_GameBoardLength * o_GameBoardWidth) % 2 == 0;
                 if (!isEvenBoard)
                 {
-                    Screen.ShowMessage("Odd number of tiles! Choose again.");
+                    Screen.ShowError(eErrorType.OddNumberOfTiles);
                 }
             }
             while (!isEvenBoard);
         }
 
-        // TODO  => el: add func thet only Console.ReadLine();
-        // TODO  => el: remve all Console.ReadLine(); and cang it to up ^
         public static string GetPlayersNames()
         {
-            return Console.ReadLine();
+            return GetUserInput();
         }
 
-        // TODO  => el: fix the return val
         public static bool GetBooleanAnswer()
         {
             bool isOkay;
             string answer;
             do
             {
-                answer = Console.ReadLine();
-                isOkay = authenticate(answer, e_InputType.AnotherGame); // the probluem
+                answer = GetUserInput();
+                isOkay = authenticate(answer, e_InputType.AnotherGame);
                 if (!isOkay)
                 {
-                    Screen.ShowErrorMessage();
+                    Screen.ShowError(eErrorType.IllegalValue);
                 }
             }
             while (!isOkay);
@@ -137,12 +87,12 @@ namespace ConsoleUserInterface
 
             do
             {
-                Screen.ShowMessage("Enter your move, or 'Q' to exit");
-                playerInputString = Console.ReadLine();
+                Screen.ShowPrompt(ePromptType.GameMove);
+                playerInputString = GetUserInput();
                 if (checkIfQuit(playerInputString))
                 {
                     /// need to quit current game
-                    Screen.QuitMessage();
+                    Screen.ShowPrompt(ePromptType.Quit);
                     throw new Exception("quiting");
                 }
 
@@ -151,6 +101,12 @@ namespace ConsoleUserInterface
             while (!isOkayMove);
 
             return playerInputString;
+        }
+
+        // read strings from console
+        public static string GetUserInput()
+        {
+            return Console.ReadLine().Trim();
         }
 
         // validate the user inputs
@@ -164,13 +120,13 @@ namespace ConsoleUserInterface
                 isWithinLimits = authenticateWithinLimits(i_StringBeforeAuth, i_InputType, i_GameBoard);
                 if (!isWithinLimits)
                 {
-                    Screen.ShowMessage("input not within defined limits, please try again");
+                    Screen.ShowError(eErrorType.OutOfBounds);
                 }
             }
             else
             {
                 isWithinLimits = false;
-                Screen.ShowMessage("illegal input, please try again");
+                Screen.ShowError(eErrorType.IllegalValue);
             }
 
             return isValid && isWithinLimits;
@@ -192,11 +148,16 @@ namespace ConsoleUserInterface
                     isValid = checkIfGameMove(i_StringBeforeAuth) || checkIfQuit(i_StringBeforeAuth);
                     break;
                 case e_InputType.AnotherGame:
-                    isValid = checkIfNumber(i_StringBeforeAuth);
+                    isValid = checkIfCharacter(i_StringBeforeAuth);
                     break;
             }
 
             return isValid;
+        }
+
+        private static bool checkIfCharacter(string i_StringToConvert)
+        {
+            return char.TryParse(i_StringToConvert, out _);
         }
 
         private static bool checkIfNumber(string i_StringToConvert)
@@ -216,12 +177,12 @@ namespace ConsoleUserInterface
 
         private static bool checkIfQuit(string i_StringToConvert)
         {
-             if(char.TryParse(i_StringToConvert, out char quitTheGame))
+            if (char.TryParse(i_StringToConvert, out char quitTheGame))
             {
                 return char.ToUpper(quitTheGame) == k_ExitTheGame;
             }
 
-             return false;
+            return false;
         }
 
         // check if the input is a valid in terms of game rules.
@@ -232,7 +193,7 @@ namespace ConsoleUserInterface
             switch (i_InputType)
             {
                 case e_InputType.GameMode:
-                    isWithinLimits = isBooleanOption(i_StringBeforeAuth);
+                    isWithinLimits = isMultipleOptions(i_StringBeforeAuth);
                     break;
                 case e_InputType.BoardDimensions:
                     isWithinLimits = isWithinGameLimits(i_StringBeforeAuth);
@@ -248,17 +209,23 @@ namespace ConsoleUserInterface
             return isWithinLimits;
         }
 
+        private static bool isMultipleOptions(string i_StringBeforeAuth)
+        {
+            byte answer = byte.Parse(i_StringBeforeAuth);
+            return answer > 0 && answer < 3;
+        }
+
         private static bool isBooleanOption(string i_StringToCheck)
         {
-            byte gameMode = byte.Parse(i_StringToCheck);
-            bool isBoolOption = gameMode > 0 && gameMode < 3;
-            return isBoolOption;
+            char answer = char.Parse(i_StringToCheck);
+            char[] availableOptions = { 'y', 'Y', 'n', 'N' };
+            return Array.Exists(availableOptions, x => x == answer);
         }
 
         private static bool isWithinGameLimits(string i_StringTocheck)
         {
             byte boardDimension = byte.Parse(i_StringTocheck);
-            bool isWithinDimensions = boardDimension >= k_minGameBoardLength && boardDimension <= k_maxGameBoardLength;
+            bool isWithinDimensions = boardDimension >= k_MinGameBoardLength && boardDimension <= k_MaxGameBoardLength;
             return isWithinDimensions;
         }
 
@@ -281,6 +248,11 @@ namespace ConsoleUserInterface
             }
 
             return false;
+        }
+
+        public static byte GetUserInputByte()
+        {
+            return (byte)0;
         }
     }
 }

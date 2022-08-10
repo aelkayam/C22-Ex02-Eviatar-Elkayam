@@ -11,9 +11,12 @@ namespace MemoryCardGame
         // public const string k_msgToAskForPlayerChoice = "Please choose a slot from the available slots\n.In the format: a capital letter for a column and then a number for a row(without a space),Like: E3 \nThen enter";
         private readonly bool m_IsHuman;
         private byte m_Score;
-        private string m_Name;
+        public byte Score { get => m_Score; set => m_Score = value; }
 
-        // private AIPlayer m_AiPlayer;
+        private string m_Name;
+        public string Name { get => m_Name; set => m_Name = value; }
+
+        private AIPlayer m_AiPlayer;
 
         /// <summary>
         /// constructor for create Human Player
@@ -28,6 +31,7 @@ namespace MemoryCardGame
             m_Name = "PC";
             m_Score = 0;
             m_IsHuman = false;
+            m_AiPlayer = null; // TODO: meke it NUlllabul 
         }
 
         public Player(string i_Name)
@@ -35,16 +39,14 @@ namespace MemoryCardGame
             Score = 0;
             m_IsHuman = true;
             Name = i_Name;
+            m_AiPlayer = new AIPlayer();
         }
 
-        public byte Score { get => m_Score; set => m_Score = value; }
-
-        public void IncreaseScore()
+        public void IncreaseScore(byte i_scoreInTheTurn)
         {
-            this.m_Score++;
+            this.m_Score += i_scoreInTheTurn;
         }
 
-        public string Name { get => m_Name; set => m_Name = value; }
 
         public bool IsHuman
         {
@@ -93,7 +95,22 @@ namespace MemoryCardGame
                 }
             }
 
-            return slotFree;
+            return slotFree; //TODO:  rename 
+        }
+        public void showBoard(Game.GameLogic m_GameBoard)
+        {
+            if (!IsHuman)
+            {
+                m_AiPlayer.showBoard(m_GameBoard);
+            }
+        }
+
+        public void restartNewGame()
+        {
+            if(!IsHuman)
+            {
+                m_AiPlayer.resetMemory();
+            }
         }
 
         public override string ToString()
@@ -101,11 +118,38 @@ namespace MemoryCardGame
             return string.Format(" ,{0} : {1} ", m_Name, m_Score);
         }
 
-        // TODO: AI
         private class AIPlayer
         {
             private static Random m_Random = new Random();
             private List<string> m_Memory = new List<string>();
+
+            public AIPlayer( List<string> memory)
+            {
+                Memory = memory;
+            }
+            public AIPlayer() : this(new List<string>()) { }
+
+
+            public List<string> Memory
+            { 
+                get 
+                { 
+                    return m_Memory;
+                } 
+                set 
+                {
+                    m_Memory = value;
+                } 
+            }
+
+            public void resetMemory()
+            {
+                Memory.Clear();
+            }
+            public  void  showBoard(Game.GameLogic m_GameBoard)
+            {
+
+            }
 
             public string GetAIPlayerChoiceSmart(List<string> i_validSlotTOChase)
             {

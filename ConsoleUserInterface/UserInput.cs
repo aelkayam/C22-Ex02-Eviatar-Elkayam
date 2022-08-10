@@ -246,5 +246,10 @@ namespace ConsoleUserInterface
 
             return false;
         }
+
+        public static byte GetUserInputByte()
+        {
+            return (byte)0;
+        }
     }
 }

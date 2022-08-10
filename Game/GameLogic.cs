@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MemoryCardGame
+
+namespace Game
 {
     // TODOS
-    // TODO: find a good name ??? whar 
-    public class GameBoard
+    // TODO: Create a function that returns an array of char for printing
+    // TODO: Create a variable that says how many face down cards are in the pack
+    // TODO: If there is an even number of face-down cards and checks if there are any cards that do not have a pair
+    // TODO: find a good name
+    public class GameLogic
     {
+        private const bool v_FaceUp = true; 
         private static readonly char[] ABC =
         {
             'A',
@@ -37,47 +42,65 @@ namespace MemoryCardGame
             'Z',
         };
 
+        /******     Dimensions   ******/
         private readonly byte km_NumOfRows;
-        private readonly byte km_NumOfCols;
-        private readonly Card[,] m_GameBoard;
+        public byte Rows
+        {
+            get
+            {
+                return km_NumOfRows;
+            }
+        }
 
-        public static List<string> temp; 
+        private readonly byte km_NumOfCols;
+        public byte Columns
+        {
+            get { 
+                return km_NumOfCols; 
+            }
+        }
+
+        private Card[,] m_GameBoard;
+
+        private byte m_FlippedCardsCounter;
+        public byte FlippedCardsCounter
+        {
+            get
+            {
+                return m_FlippedCardsCounter;
+            }
+            set
+            {
+                m_FlippedCardsCounter = value;
+            }
+            
+        }
 
         /// <summary>
         /// constructor
         /// </summary>
-        public GameBoard(byte i_height, byte i_width)
+        public GameLogic(byte i_height, byte i_width)
         {
+            /******     Dimensions   ******/
             this.km_NumOfRows = i_width;
             this.km_NumOfCols = i_height;
-            temp= new List<string>();
-            char[] chars = new char[km_NumOfRows * km_NumOfCols];
+            this.m_FlippedCardsCounter = 0;
+
+            char[] chars = new char[Rows * Columns];
             for (byte j = 0; j < chars.Length; j++)
             {
                 chars[j] = getCharForSlat(j);
             }
-
-            foreach (char c in chars)
-            {
-                Console.Write(c + " ");
-            }
-
-            Console.WriteLine();
             shuffleCard(ref chars);
-            foreach (char c in chars)
-            {
-                Console.Write(c + " ");
-            }
 
-            Console.WriteLine();
-
-            m_GameBoard = new Card[km_NumOfRows, km_NumOfCols];
+            m_GameBoard = new Card[Rows, Columns];
             byte indexInChars = 0;
-            for (int i = 0; i < km_NumOfRows; i++)
+            for (int i = 0; i < Rows; i++)
             {
-                for (int j = 0; j < km_NumOfCols; j++)
+                for (int j = 0; j < Columns; j++)
                 {
-                    m_GameBoard[i, j] = new Card(chars[indexInChars++], false);
+                    m_GameBoard[i, j] = new Card(chars[indexInChars++], !v_FaceUp);
+                    Console.Write(string.Format("name {0}  val: {1}||", m_GameBoard[i, j], m_GameBoard[i, j].Value));
                 }
 
                 Console.WriteLine();
@@ -132,13 +155,17 @@ namespace MemoryCardGame
         {
             get
             {
-                return km_NumOfRows * km_NumOfCols;
+                return Rows * Columns;
+
             }
         }
 
-        public Card[,] GetCard()
+        public bool HeveMoreMoves
         {
-            return m_GameBoard;
+            get
+            {
+                return ! (Length - FlippedCardsCounter > 0);
+            }
         }
 
         /// indexer:
@@ -147,14 +174,48 @@ namespace MemoryCardGame
             get
             {
                 configIndexFormat(i_indexFormt, out int io_rowIndex, out int io_colIndex);
-                return m_GameBoard[io_rowIndex, io_colIndex];
+                return this[(byte) io_rowIndex, (byte)io_colIndex];
             }
 
             set
             {
                 configIndexFormat(i_indexFormt, out int io_rowIndex, out int io_colIndex);
-                m_GameBoard[io_rowIndex, io_colIndex] = value;
+                this[(byte) io_rowIndex, (byte)io_colIndex] = value;
             }
+        }
+       
+
+        public Card this[byte i_rows , byte i_columns]
+        {
+            get 
+            {
+                IsValidLocation(i_rows, i_columns);
+                return m_GameBoard[i_rows, i_columns]; 
+            }
+            set
+            {
+                IsValidLocation(i_rows, i_columns);
+                m_GameBoard[i_rows, i_columns]=value;
+            }
+        }
+
+        private bool IsValidLocation(byte i_rows , byte i_columns)
+        {
+            bool isValidRow = SettingAndRules.Rules.isBetween(i_rows, Rows ,1);
+            bool isValidcol = SettingAndRules.Rules.isBetween(i_rows, Columns, 1);
+
+            if (isValidRow || isValidcol)
+            {
+                throw new IndexOutOfRangeException("Index out of range in configIndexFormat");
+            }
+
+            return isValidRow && isValidcol;
+        }
+
+        public void byteToLocation(byte i_ValueForCheck , out byte io_rows, byte io_columns )
+        {
+            io_rows = (byte)(i_ValueForCheck >> Rows);
+            io_columns = (byte)(i_ValueForCheck & Columns);
         }
 
         public void Flipped(string i_index, bool i_Value)
@@ -162,30 +223,62 @@ namespace MemoryCardGame
             Card c = this[i_index];
             c.Flipped = i_Value;
             this[i_index] = c;
-            Console.WriteLine(string.Format("Flipped the index {0}  to {1} , the Card val: {2} ", i_index, i_Value, this[i_index].Flipped));
         }
-
-        public bool DoThePlayersChoicesMatch(string i_firstPlayerChoices, string i_SecondPlayerChoices)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="i_firstPlayerChoices"></param>
+        /// <param name="i_SecondPlayerChoices"></param>
+        /// <param name="io_scoreForTheTurn"></param>
+        /// <returns>true is The player got another turn</returns>
+        /// <exception cref=""
+        public bool DoThePlayersChoicesMatch(out byte io_scoreForTheTurn ,params string[] i_argsChosenInTurn)
         {
-            bool isPair = this[i_firstPlayerChoices] == this[i_SecondPlayerChoices];
+            io_scoreForTheTurn = 0;
+            bool isPair = true;
+
+            if (i_argsChosenInTurn.Length != 2)  ///TODO: Maybe change it to a fixed number 
+            {
+                throw new Exception("The number of cards does not match the format");
+            }
+
+            string firstIndex = i_argsChosenInTurn[0];
+
+            foreach (string index in i_argsChosenInTurn)
+            {
+                isPair = this[firstIndex] == this[index];
+                if(!isPair)
+                {
+                    break;
+                }
+            }
+
             if (!isPair)
             {
-                Flipped(i_firstPlayerChoices, false);
-                Flipped(i_SecondPlayerChoices, false);
+                foreach (string index in i_argsChosenInTurn)
+                {
+                    Flipped(index, !v_FaceUp);
+                }
+            }
+            else
+            {
+                FlippedCardsCounter += 2;
+                io_scoreForTheTurn = 1;
             }
 
             return isPair;
         }
+
 
         // ===================================================================
         // methods that use to draw the board
         // ===================================================================
         public char[,] GetBoardToDraw()
         {
-            char[,] boardToDraw = new char[km_NumOfRows, km_NumOfCols];
-            for (int i = 0; i < km_NumOfRows; i++)
+            char[,] boardToDraw = new char[Rows, Columns];
+            for (int i = 0; i < Rows; i++)
             {
-                for (int j = 0; j < km_NumOfCols; j++)
+                for (int j = 0; j < Columns; j++)
                 {
                     boardToDraw[i, j] = m_GameBoard[i, j].Value;
                 }
@@ -200,9 +293,9 @@ namespace MemoryCardGame
         public List<string> GetAllValidTilesForChoice()
         {
             List<string> validSlots = new List<string>();
-            for (int i = 0; i < km_NumOfRows; i++)
+            for (int i = 0; i < Rows; i++)
             {
-                for (int j = 0; j < km_NumOfCols; j++)
+                for (int j = 0; j < Columns; j++)
                 {
                     bool isCardFlip = m_GameBoard[i, j].Flipped;
                     if (isCardFlip)
@@ -232,7 +325,7 @@ namespace MemoryCardGame
             io_rowIndex--;
 
             // check if col exists
-            for (int i = 0; i < km_NumOfCols; i++)
+            for (int i = 0; i < Columns; i++)
             {
                 if (charToFindTheIndex == ABC[i])
                 {
@@ -254,6 +347,8 @@ namespace MemoryCardGame
             // , i_IndexFormt, charToReplaceTheIndex, charToFindTheIndex, isSuccessTryParse, isUpper , io_colIndex , io_rowIndex));
 
             // isUpper = char.IsLetter(charToFindTheIndex)
+
+            // TODO: remove this 
             if (!isSuccessTryParse || !isUpper)
             {
                 throw new IndexOutOfRangeException(string.Format(
@@ -272,8 +367,8 @@ isUpper,
 m_GameBoard[io_rowIndex, io_colIndex]));
             }
 
-            bool isInvalueRow = io_rowIndex < 0 || io_rowIndex >= km_NumOfRows;
-            bool isInvalueCol = io_colIndex < 0 || io_colIndex >= km_NumOfCols;
+            bool isInvalueRow = io_rowIndex < 0 || io_rowIndex >= Rows;
+            bool isInvalueCol = io_colIndex < 0 || io_colIndex >= Columns;
             if (isInvalueRow || isInvalueCol)
             {
                 throw new IndexOutOfRangeException("Index out of range in configIndexFormat");
@@ -282,8 +377,7 @@ m_GameBoard[io_rowIndex, io_colIndex]));
 
         public struct Card
         {
-            // TODO XXX finhe : add show func (send to interface)  XX get (??) not to do 
-            // private const string km_formatToPrint = " {0} |";
+            // private const string km_formatToPrint = " {} |";
             private const char m_default = ' ';
 
             private char m_Value;
@@ -364,6 +458,7 @@ m_GameBoard[io_rowIndex, io_colIndex]));
                 return hashCode;
             }
 
+            // TODO: add show func (send to interface)  XX get (??)
         }
     }
 }

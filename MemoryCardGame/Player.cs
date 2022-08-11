@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using ConsoleUserInterface;
+using Game;
 
 namespace MemoryCardGame
 {
     internal class Player
     {
-        // public const string k_msgSlotIsTaken = "This slot {0} is taken";
-        // public const string k_msgInvalidInput = "The slot {0} Does not exist";
-        // public const string k_msgToAskForPlayerChoice = "Please choose a slot from the available slots\n.In the format: a capital letter for a column and then a number for a row(without a space),Like: E3 \nThen enter";
         private readonly bool m_IsHuman;
         private byte m_Score;
         public byte Score { get => m_Score; set => m_Score = value; }
@@ -60,19 +58,7 @@ namespace MemoryCardGame
 
             if (IsHuman)
             {
-                bool validInput;
-                do
-                {
-                    returnChosice = UserInput.GetPlayerGameMove();
-                    validInput = checkSlotAvailable(returnChosice, i_validSlotTOChase);
-                    if (validInput)
-                    {
-                        Screen.ShowError(eErrorType.CardTaken);
-
-                        // Console.WriteLine("try Again");
-                    }
-                }
-                while (validInput);
+                 returnChosice = UserInput.GetPlayerGameMove();
             }
             else
             {
@@ -83,21 +69,7 @@ namespace MemoryCardGame
             return returnChosice;
         }
 
-        private static bool checkSlotAvailable(string i_slotForTest, List<string> i_ValidSlotToChoose)
-        {
-            bool slotFree = false;
-            foreach (string slot in i_ValidSlotToChoose)
-            {
-                if (slot == i_slotForTest)
-                {
-                    slotFree = true;
-                    break;
-                }
-            }
-
-            return slotFree; //TODO:  rename 
-        }
-        public void showBoard(Game.GameLogic m_GameBoard)
+        public void showBoard(char[,] m_GameBoard)
         {
             if (!IsHuman)
             {
@@ -105,6 +77,10 @@ namespace MemoryCardGame
             }
         }
 
+
+        /// <summary>
+        /// chang name 
+        /// </summary>
         public void restartNewGame()
         {
             if(!IsHuman)
@@ -115,7 +91,7 @@ namespace MemoryCardGame
 
         public override string ToString()
         {
-            return string.Format(" ,{0} : {1} ", m_Name, m_Score);
+            return string.Format("{0} : {1} ", m_Name, m_Score);
         }
 
         private class AIPlayer
@@ -146,17 +122,48 @@ namespace MemoryCardGame
             {
                 Memory.Clear();
             }
-            public  void  showBoard(Game.GameLogic m_GameBoard)
+            public  void  showBoard(char[,] m_GameBoard)
             {
+                byte row = 0;
+                byte col = 0;
 
+                 foreach (char ch in m_GameBoard)
+                {
+                    if(col < m_GameBoard.Rank)
+                    {
+                        col = 0;
+                        row++;
+                    }
+
+                    if(ch != ' ')
+                    {
+                        string str = string.Format("{0} {1}{2}", ch, GameLogic.ABC[col], row);
+                        if (m_Memory.Contains(str))
+                        {
+                            m_Memory.Add(str);
+                        }
+                    }
+
+                    col++;
+                    
+                }
             }
 
             public string GetAIPlayerChoiceSmart(List<string> i_validSlotTOChase)
             {
+
+                ///  1st 
+                ///  pc : A , B = I C , A = pc :
+                m_Memory.Sort();// 
+
+                //2nd
+                // A = A   
+
                 foreach (string ch in i_validSlotTOChase)
                 {
                     if (!m_Memory.Contains(ch))
                     {
+
                     }
                 }
 

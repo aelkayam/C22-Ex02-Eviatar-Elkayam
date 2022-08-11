@@ -82,8 +82,12 @@ namespace Game
             k_NumOfChoiceInPlayerTurn , k_NumOfChoiceInPlayerTurn, v_IsFixed, k_trowFixedMsg);
 
         //need to move this for byte to <T>
-        public struct Rules
+        public struct Rules 
         {
+            //enum type
+            //{
+            //    int, char , byte 
+            //}
             public readonly string m_name;
             public readonly byte m_UpperBound;
             public readonly byte m_lowerBound;
@@ -113,7 +117,7 @@ namespace Game
                 return i_Valuechecked >= i_upperBound && i_Valuechecked <= i_lowerBound;
             }
 
-            public string ToString()
+            public override string ToString()
             {
                 return string.Format(" the {0} between {1} to {2} ", m_name, m_lowerBound, m_UpperBound);
             }

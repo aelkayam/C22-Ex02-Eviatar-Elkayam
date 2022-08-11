@@ -12,7 +12,7 @@ namespace Game
     public class GameLogic
     {
         private const bool v_FaceUp = true; 
-        private static readonly char[] ABC =
+        public static readonly char[] ABC =
         {
             'A',
             'B',
@@ -76,6 +76,7 @@ namespace Game
             
         }
 
+        public List<string> FlippedCardsList;
         /// <summary>
         /// constructor
         /// </summary>
@@ -92,7 +93,7 @@ namespace Game
                 chars[j] = getCharForSlat(j);
             }
             shuffleCard(ref chars);
-
+            FlippedCardsList = new List<string>();
             m_GameBoard = new Card[Rows, Columns];
             byte indexInChars = 0;
             for (int i = 0; i < Rows; i++)
@@ -100,8 +101,8 @@ namespace Game
                 for (int j = 0; j < Columns; j++)
                 {
                     m_GameBoard[i, j] = new Card(chars[indexInChars++], !v_FaceUp);
-                    Console.Write(string.Format("name {0}  val: {1}||", m_GameBoard[i, j], m_GameBoard[i, j].Value));
-                }
+                    FlippedCardsList.Add(string.Format("{0}{1} = {2}  :", ABC[j], i + 1, chars[indexInChars - 1]));
+                } 
 
                 Console.WriteLine();
             }
@@ -164,7 +165,7 @@ namespace Game
         {
             get
             {
-                return ! (Length - FlippedCardsCounter > 0);
+                return Length - FlippedCardsCounter > 0;
             }
         }
 
@@ -183,7 +184,6 @@ namespace Game
                 this[(byte) io_rowIndex, (byte)io_colIndex] = value;
             }
         }
-       
 
         public Card this[byte i_rows , byte i_columns]
         {
@@ -211,7 +211,11 @@ namespace Game
 
             return isValidRow && isValidcol;
         }
-
+        /*
+         * for i for 
+                 for i  =  
+         */
+        // wtf  15 = 4 , 7 
         public void byteToLocation(byte i_ValueForCheck , out byte io_rows, byte io_columns )
         {
             io_rows = (byte)(i_ValueForCheck >> Rows);
@@ -298,9 +302,10 @@ namespace Game
                 for (int j = 0; j < Columns; j++)
                 {
                     bool isCardFlip = m_GameBoard[i, j].Flipped;
-                    if (isCardFlip)
+
+                    if (!isCardFlip)
                     {
-                        validSlots.Add(string.Format("{0}{1}", ABC[i], j));
+                        validSlots.Add(string.Format("{0}{1}", ABC[j], i+1));
                     }
                 }
             }

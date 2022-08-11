@@ -35,7 +35,7 @@ namespace MemoryCardGame
     // add user interface and the guy's DLL
 
     // TODO: T ? in the end  
-    public class Game<T>
+    public class GameEngine<T>
     {
         public const bool v_flippedTheCard = true;
 
@@ -48,7 +48,7 @@ namespace MemoryCardGame
         // ===================================================================
         //  constructor  and methods that the constructor uses
         // ===================================================================
-        public Game()
+        public GameEngine()
         {
             m_GameBoard = null;
             m_AllPlayersInGame = null;
@@ -96,6 +96,7 @@ namespace MemoryCardGame
             string strMsg = string.Format("Please enter the {}", i_rule.ToString());
             byte returnVal = 0;
             bool isInputValid = false;
+
             do
             {
                 Screen.ShowMessage(strMsg);
@@ -108,7 +109,7 @@ namespace MemoryCardGame
 
         private bool isRunning()
         {
-            return m_isPlaying || m_GameBoard.HeveMoreMoves;
+            return m_isPlaying && m_GameBoard.HeveMoreMoves;
         }
 
         private int getPlayerIndex()
@@ -150,6 +151,8 @@ Setting.Rows.m_lowerBound);
                 }
             }
             while (m_isPlaying);
+
+            Screen.ShowPrompt(ePromptType.Quit);
         }
 
         private void playTheGame()
@@ -161,10 +164,17 @@ Setting.Rows.m_lowerBound);
                     Player currentlyPlayingPlayer = m_AllPlayersInGame[getPlayerIndex()];
                     List<string> playerChois = new List<string>();
 
-                    // TODO : ?? NumOfChoiceInTurn = fix it to be a val ??
-                    for (int i = 0; i < Setting.NumOfChoiceInTurn.m_UpperBound; i++)
+                    int i = 0;
+                    while (i < Setting.NumOfChoiceInTurn.m_UpperBound)
                     {
-                        playerChois.Add(gameStage(currentlyPlayingPlayer));
+                        string indexChoice = gameStage(currentlyPlayingPlayer);
+                        bool userInputValid = playerChois.Contains(indexChoice);// ? 
+
+                        if(!userInputValid)
+                        {
+                            playerChois.Add(indexChoice);
+                            ++i;
+                        }
                     }
 
                     // Show all players the board
@@ -179,35 +189,37 @@ Setting.Rows.m_lowerBound);
 
                     currentlyPlayingPlayer.IncreaseScore(o_scoreForTheTurn);
                     Thread.Sleep(k_sleepBetweenTurns);
-
                 }
                 while (isRunning());
             }
             catch (Exception e)
             {
-                //Console.WriteLine(e);
+                // Console.WriteLine(e);
                 m_isPlaying = false;
             }
         }
 
         private string gameStage(Player i_currentlyPlayingPlayer)
         {
-            bool userInputValid = true;
             string indexChoice;
+            bool userInputValid = true;
             string mag = string.Format("{0} choose a tile", i_currentlyPlayingPlayer.Name);
             List<string> validSlotForChose = m_GameBoard.GetAllValidTilesForChoice();
 
             do
             {
                 drawBoard();
-                Screen.ShowMessage(mag);
                 if (!userInputValid)
                 {
-                    Console.WriteLine("try Agin !! ");
+                    Screen.ShowError(eErrorType.CardTaken);
                 }
-                indexChoice = i_currentlyPlayingPlayer.GetPlayerChoice(validSlotForChose);
-                userInputValid = validSlotForChose.Contains(indexChoice);// ? 
-            } while (userInputValid);
+
+                Screen.ShowMessage(mag);
+                indexChoice = i_currentlyPlayingPlayer.GetPlayerChoice(validSlotForChose);      
+                userInputValid = validSlotForChose.Contains(indexChoice);
+
+            } while (!userInputValid);
+
             m_GameBoard.Flipped(indexChoice, v_flippedTheCard);
 
             return indexChoice;
@@ -225,7 +237,7 @@ Setting.Rows.m_lowerBound);
             drawBoard();
             foreach(Player player in m_AllPlayersInGame)
             {
-                player.showBoard(m_GameBoard);
+                player.showBoard(m_GameBoard.GetBoardToDraw());
             }
         }
 
